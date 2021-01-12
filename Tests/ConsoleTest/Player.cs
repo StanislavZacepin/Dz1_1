@@ -9,7 +9,8 @@ namespace ConsoleTest
 
         public string Name { get; set; }
         public string Surname { get; set; }
-        public DateTime Birthday { get; set; } = DateTime.Now; // Присвоить дату этого дня
+        public /*Nullable<DateTime> оболочка. позволяет присваем себе null.
+        * DateTime? сокращеная . Нужно будет проверять на null */ DateTime Birthday { get; set; } = DateTime.Now; // Присвоить дату этого дня
 
         public Player()
         {
