@@ -69,9 +69,9 @@ namespace AsteroidGame
             for (int i = __GameObjects.Length -1; i < __GameObjects.Length ; i++)
             {
                 __GameObjects[i] = new Planet(
-                    new Point(800, (int)(i / 6 * 20)),
+                    new Point(800, (i / 6 * 20)),
                     new Point(-10, 0),
-                   new Size(50, 50));
+                   new Size(51, 51));
             }
         }
     public static void Draw()// будет рисовать что либо
