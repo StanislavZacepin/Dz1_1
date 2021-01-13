@@ -35,10 +35,12 @@ namespace AsteroidGame
         }
         public static void Load()
         {
-            const int visual_object_count = 30; // для масива . количество обьектов
+            const int visual_object_count = 60; // для масива . количество обьектов
             __GameObjects = new VisualObject[visual_object_count];
 
-            for( int i = 0; i < __GameObjects.Length/2; i++)
+            Random rnd = new Random();
+
+            for( int i = 0; i < __GameObjects.Length/3; i++)
             {
                 __GameObjects[i] = new VisualObject(
                 new Point(600, i * 20),
@@ -47,12 +49,20 @@ namespace AsteroidGame
                 
             }
            
+            for (int i = __GameObjects.Length / 3; i < __GameObjects.Length/2 ; i++)
+            {
+                __GameObjects[i] = new Star(
+                new Point(300, (int)(i/1.5 * 10)),
+                new Point(- i, 0),
+               rnd.Next(0, 10));
+
+            }
             for (int i = __GameObjects.Length / 2; i < __GameObjects.Length ; i++)
             {
                 __GameObjects[i] = new Star(
-                new Point(500, (int)(i/1.5 * 20)),
-                new Point(- i, 0),
-                10);
+                new Point(800, (int)(i / 2.5 * 20)),
+                new Point(-i, 0),
+                rnd.Next(0, 10));
 
             }
         }
