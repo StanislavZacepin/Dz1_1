@@ -7,6 +7,8 @@ namespace AsteroidGame
     {
         private static BufferedGraphicsContext __Contex;
         private static BufferedGraphics __Buffer;
+
+        private static VisualObject[] __GameObjects; // создания масива обьектов
         public static int Width { get; set; }
         public static int Height { get; set; }
         public static void Initialize(Form GameForm)
@@ -19,6 +21,8 @@ namespace AsteroidGame
             __Buffer = __Contex.Allocate(graphics, new Rectangle(0, 0, Width, Height));
             // формирования буфура указывая размеры где будет обресовка
         }
+
+        
     public static void Draw()// будет рисовать что либо
         {
             Graphics graphics = __Buffer.Graphics; // используем буфер и извлекаем обьекат графики
