@@ -13,6 +13,7 @@ namespace AsteroidGame
         private static VisualObject[] __GameObjects; // создания масива обьектов
         public static int Width { get; set; }
         public static int Height { get; set; }
+        #region*** public static void Initialize(Form GameForm) Создания контекста и формирования буфера
         public static void Initialize(Form GameForm)
         {
             Width = GameForm.Width;
@@ -28,14 +29,17 @@ namespace AsteroidGame
             timer.Start();
            
         }
-
+        #endregion
         private static void OnTimerTick(object sender, EventArgs e)
         {
             Update();
             Draw();
         }
+        #region*** public static void Load() масив обьектов
         public static void Load()
+       
         {
+
             const int visual_object_count = 60; // для масива . количество обьектов
             __GameObjects = new VisualObject[visual_object_count];
 
@@ -74,7 +78,9 @@ namespace AsteroidGame
                    new Size(51, 51));
             }
         }
-    public static void Draw()// будет рисовать что либо
+        #endregion
+        #region *** public static void Draw() будет рисовать что либо
+        public static void Draw()
         {
             Graphics graphics = __Buffer.Graphics; // используем буфер и извлекаем обьекат графики
 
@@ -94,7 +100,8 @@ namespace AsteroidGame
 
             __Buffer.Render();//выводим буфер
         }
-    private static void Update()
+        #endregion
+        private static void Update()
         {
             foreach (var game_object in __GameObjects)
                 game_object.Update();
