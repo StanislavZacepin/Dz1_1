@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 using System;
+using System.IO;
 
 namespace AsteroidGame
 {
@@ -57,7 +58,7 @@ namespace AsteroidGame
                rnd.Next(0, 10));
 
             }
-            for (int i = __GameObjects.Length / 2; i < __GameObjects.Length ; i++)
+            for (int i = __GameObjects.Length / 2; i < __GameObjects.Length-1 ; i++)
             {
                 __GameObjects[i] = new Star(
                 new Point(800, (int)(i / 2.5 * 20)),
@@ -65,12 +66,25 @@ namespace AsteroidGame
                 rnd.Next(0, 10));
 
             }
+            for (int i = __GameObjects.Length -1; i < __GameObjects.Length ; i++)
+            {
+                __GameObjects[i] = new Planet(
+                    new Point(800, (int)(i / 6 * 20)),
+                    new Point(-10, 0),
+                   new Size(50, 50));
+            }
         }
     public static void Draw()// будет рисовать что либо
         {
             Graphics graphics = __Buffer.Graphics; // используем буфер и извлекаем обьекат графики
 
+            Image image = Image.FromFile("sci-fi-space-68758.jpg");
+           // graphics = Graphics.FromImage(image); Пытался вставить кортинку . Но не мог разобраться . И за того что здавать дз уже заватр (((
             graphics.Clear(Color.Black);
+            
+
+            
+            
 
             //graphics.DrawRectangle(Pens.White, new Rectangle(100, 100, 200, 200));// рисуем триугольник
             //graphics.FillEllipse(Brushes.Red, new Rectangle(100, 100, 200, 200));
