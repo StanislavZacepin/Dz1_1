@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace AsteroidGame
 {
@@ -14,10 +15,24 @@ namespace AsteroidGame
         [STAThread]
         static void Main()
         {
-            Application.SetHighDpiMode(HighDpiMode.SystemAware);
+       
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+
+            Form GameWindow = new Form();
+            #region *** Размер окна
+            GameWindow.Width = 800;
+            GameWindow.Height = 700;
+            #endregion
+            GameWindow.Show();
+            Game.Initialize(GameWindow);
+            Game.Load();
+            Game.Draw();
+
+            Application.Run(GameWindow);
+
+
+            
         }
     }
 }
