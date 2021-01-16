@@ -6,6 +6,7 @@ namespace ConsoleTest.Loggers
 {
    internal interface ILogger
     {
+        public void TestMethod();
         public abstract void Log(string txt);
 
         public void LogInformation(string txt);

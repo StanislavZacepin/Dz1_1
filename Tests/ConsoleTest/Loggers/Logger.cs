@@ -4,7 +4,10 @@ namespace ConsoleTest.Loggers
 {
    internal abstract class Logger :ILogger
     {
-
+        void ILogger.TestMethod()
+        {
+            Console.WriteLine("Тестовый метод");
+        }
 
         public abstract void Log(string txt);
              
