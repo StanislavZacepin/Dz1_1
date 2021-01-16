@@ -10,7 +10,13 @@ namespace ConsoleTest
         private static ILogger _Logger;
         static void Main(string[] args)
         {
+            var student = new Student
+            {
+                Surname = "Иванов",
+                Name = "Иван"
+            };
 
+            Console.WriteLine(student);
             //_Logger = new TextFileLogger("test.log"); За место него создаем консольного логера
             //_Logger = new ConsoleLogger(); Заместо него создаем и на конслоль и в фаил
             _Logger = new CombineLogger(new ConsoleLogger(), new TextFileLogger("test.log"));
