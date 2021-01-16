@@ -2,8 +2,9 @@
 
 namespace ConsoleTest.Loggers
 {
-   internal abstract class Logger
+   internal abstract class Logger :ILogger
     {
+
 
         public abstract void Log(string txt);
              
