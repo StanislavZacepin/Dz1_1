@@ -1,31 +1,36 @@
 ﻿using System;
+using ConsoleTest.Loggers;
 
 namespace ConsoleTest
 {
     class Program
     {
+        private static int _X = 5;
+        private static int _Y = 0;
+        private static Logger _Logger;
         static void Main(string[] args)
         {
-            #region *** Пример провекри на null
-            DateTime? time = null;
 
-            if (time != null)
+            //_Logger = new TextFileLogger("test.log"); За место него создаем консольного логера
+            //_Logger = new ConsoleLogger(); Заместо него создаем и на конслоль и в фаил
+            _Logger = new CombineLogger(new ConsoleLogger(), new TextFileLogger("test.log"));
+            _Logger.LogInformation("Приложение запущено");
+
+            try
             {
-                DateTime t = (DateTime)time;
-                Console.WriteLine(time);
+                var z = _X / _Y;
+            }
+            catch (DivideByZeroException )
+            {
+
+                _Logger.LogError($"Ошибка при делении {_X} на 0");
             }
 
-            if (time.HasValue)
-            {
-               // DateTime t = time.GetValueOrDefault();
-                DateTime t = time.Value;
-                Console.WriteLine(time);
-            }
-            #endregion
-            //Vector2DClass unit =  Vector2DClass.Unit;
-            //Vector2DClass zero = Vector2DClass.Zero;  обращения к статическим полям
+            Console.WriteLine("Нажмите Enter для выхода");
+            Console.ReadKey();
 
-            Vector2DClass v1 = new Vector2DClass();
+            _Logger.LogInformation("Работа приложения завершена");
+            /*не нужно если перевели на ватоматическую функцыю сброаса на диск */_Logger.Flush(); // Сброс с буфера на диск
         }
     }
 }
