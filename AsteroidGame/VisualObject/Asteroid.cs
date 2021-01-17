@@ -20,6 +20,20 @@ namespace AsteroidGame.VisualObject
         }
 
         public bool CheckCollision(ICollision obj) => Rect.IntersectsWith(obj.Rect); // выполнения проверки н астолкновения
-       
+
+        public override void BazeObject()
+        {
+            _Position.X += _Direction.X;
+            _Position.Y += _Direction.Y;
+
+            if (_Position.X < 0) _Direction.X *= -1;
+            // выход за зону
+            if (_Position.Y < 0) _Direction.Y *= -1;
+
+
+            if (_Position.X > Game.Width - 45) _Direction.X *= -1;
+            // выход за другую зону
+            if (_Position.Y > Game.Height - 65) _Direction.Y *= -1;
+        }
     }
 }

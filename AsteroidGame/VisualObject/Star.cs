@@ -21,13 +21,13 @@ namespace AsteroidGame.VisualObject
             
             
         }
-        public override void Update()
+       
+
+        public override void BazeObject()
         {
             _Position.X += _Direction.X;
 
             if (_Position.X < 0) _Position.X = Game.Width + _Size.Width;
-
-            
 
         }
     }

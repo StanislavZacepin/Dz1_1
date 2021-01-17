@@ -92,7 +92,7 @@ namespace AsteroidGame.VisualObject
         private static void Update()
         {
             foreach (var game_object in __GameObjects)
-                game_object.Update();
+                game_object.BazeObject();
         }
     }
 }

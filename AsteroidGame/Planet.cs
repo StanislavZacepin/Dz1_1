@@ -19,7 +19,7 @@ namespace AsteroidGame.VisualObject
             graphics.DrawImage(_Image, _Position.X, _Position.Y, _Size.Width, _Size.Height) ;
         }
 
-        public override void Update()
+        public override void BazeObject()
         {
             _Position.X += _Direction.X;
 
