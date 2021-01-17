@@ -20,8 +20,12 @@ namespace AsteroidGame.VisualObject
         #region*** public static void Initialize(Form GameForm) Создания контекста и формирования буфера
         public static void Initialize(Form GameForm)
         {
-            Width = GameForm.Width;
-            Height = GameForm.Height;
+            if (!(GameForm.Width >= 1000 || GameForm.Height >= 1000))
+            {
+                Width = GameForm.Width;
+                Height = GameForm.Height;
+            }
+            else throw new ArgumentOutOfRangeException();
 
             __Contex = BufferedGraphicsManager.Current; //создания контекста
             Graphics graphics = GameForm.CreateGraphics(); // обьект отвечающий за рисования
@@ -71,8 +75,7 @@ namespace AsteroidGame.VisualObject
         {
             Graphics graphics = __Buffer.Graphics; // используем буфер и извлекаем обьекат графики
 
-          //  Image image = Image.FromFile("sci-fi-space-68758.jpg");
-           // graphics = Graphics.FromImage(image); Пытался вставить кортинку . Но не мог разобраться . И за того что здавать дз уже заватр (((
+
             graphics.Clear(Color.Black);
             graphics.DrawImage(_Image, 0, 0, 800, 700);
             
