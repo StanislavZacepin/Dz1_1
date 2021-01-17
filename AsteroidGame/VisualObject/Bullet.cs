@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AsteroidGame.VisualObject
 {
-    internal class Bullet : VisualObject,ICollision
+    internal class Bullet : CollisionObject
     {
         private const int __BulletSizeX = 20;
         private const int __BulletSizeY = 5;
@@ -28,7 +28,6 @@ namespace AsteroidGame.VisualObject
             graphics.DrawEllipse(Pens.White,rect);
         }
 
-        public Rectangle Rect => new Rectangle(_Position, _Size);
-        public bool CheckCollision(ICollision obj) => Rect.IntersectsWith(obj.Rect);
+        
     }
 }

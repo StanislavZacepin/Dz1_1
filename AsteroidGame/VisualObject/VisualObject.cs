@@ -5,22 +5,20 @@ using System.Drawing;
 
 namespace AsteroidGame.VisualObject
 {
-    class VisualObject
+  internal abstract class VisualObject
     {
         protected Point _Position; // Положения
         protected Point _Direction; // Вектор скорости
         protected Size _Size; //размер
-        public VisualObject(Point Position,Point Direction,Size size)
+       protected  VisualObject(Point Position,Point Direction,Size size)
         {
             _Position = Position;
             _Direction = Direction;
             _Size = size;
         }
-   
-    public virtual void Draw(Graphics graphics)
-        {
-            graphics.DrawEllipse(Pens.White, _Position.X, _Position.Y, _Size.Width,_Size.Height);
-        }
+
+        public abstract void Draw(Graphics graphics);
+       
     public virtual void Update()
         {
             _Position.X += _Direction.X;
