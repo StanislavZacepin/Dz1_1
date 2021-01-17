@@ -9,7 +9,7 @@ namespace AsteroidGame.VisualObject
     class Planet : ImageObject
     {
         private static readonly Image _Image = Properties.Resources.zemla2;
-        public Planet(Point postion, Point Direction, Size size):base(postion,Direction,size,_Image)
+        public Planet(Point postion, Point Direction, int size):base(postion,Direction,new Size(size,size),_Image)
         {
             
         }

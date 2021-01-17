@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using System;
 using System.IO;
 using AsteroidGame.VisualObject;
+using System.Collections.Generic;
 
 namespace AsteroidGame.VisualObject
 {
@@ -42,46 +43,29 @@ namespace AsteroidGame.VisualObject
         public static void Load()
        
         {
-
-            const int visual_object_count = 60; // для масива . количество обьектов
-            __GameObjects = new VisualObject[visual_object_count];
-
-            Random rnd = new Random();
-
-            for( int i = 0; i < __GameObjects.Length/3; i++)
+            var game_objects = new List<VisualObject>();
+            for (int i = 0; i < 15; i++)
             {
-                __GameObjects[i] = new VisualObject(
-                new Point(600, i * 20),
-                new Point(15 - i, 20 - i),
-                new Size(20, 20));
-                
+                game_objects.Add(new Asteroid(new Point(600, i * 20), new Point(15 - i, 20 - i), 20));
+       
             }
-           
-            for (int i = __GameObjects.Length / 3; i < __GameObjects.Length/2 ; i++)
+
+            for (int i = 0; i < 15; i++)
             {
-                __GameObjects[i] = new Star(
-                new Point(300, (int)(i/1.5 * 10)),
-                new Point(- i, 0),
-               rnd.Next(0, 5));
+                game_objects.Add(new Star(new Point(800, (int)(i / 2.0*10)), new Point( - i, 10),15));
 
             }
-            //for (int i = __GameObjects.Length / 2; i < __GameObjects.Length-1 ; i++)
-            //{
-            //    __GameObjects[i] = new Star(
-            //    new Point(800, (int)(i / 2.5 * 20)),
-            //    new Point(-i, 0),
-            //    rnd.Next(0, 5));
-
-            //}
-            for (int i = __GameObjects.Length -1; i < __GameObjects.Length ; i++)
+            for (int i = 0; i < 2; i++)
             {
-                __GameObjects[i] = new Planet(
-                    new Point(800, (i / 6 * 20)),
-                    new Point(-10, 0),
-                   new Size(100, 100));
+                game_objects.Add(new Planet(new Point(800, (int)(i / 2.0 * 10)), new Point(-i, 0), 100));
+
             }
+
+            __GameObjects = game_objects.ToArray();// из списк аделаем масив
+            #endregion
+
         }
-        #endregion
+
         #region *** public static void Draw() будет рисовать что либо
         public static void Draw()
         {
