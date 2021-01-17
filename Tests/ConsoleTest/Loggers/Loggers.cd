@@ -3,7 +3,7 @@
   <Class Name="ConsoleTest.Loggers.Logger">
     <Position X="9.5" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>CgAAAAAAAAAAAAAAAAAAAAAAIQgAAAAAAAAAAAAIAAA=</HashCode>
+      <HashCode>CgAAAAAAAAAAAAAAAAAAAAAAIQgAAEAAAAAAAAAIAAA=</HashCode>
       <FileName>Loggers\Logger.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -32,9 +32,10 @@
   <Class Name="ConsoleTest.Loggers.TextFileLogger" Collapsed="true">
     <Position X="11.5" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAACAAAAAAAAAAAgAAAAAAAAAAAAIAAA=</HashCode>
+      <HashCode>AAAAAAAAACAAAACAAAAAAAAAAAgAAAAAAAAAAAAIAAA=</HashCode>
       <FileName>Loggers\TextFileLogger.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="ConsoleTest.Loggers.TraceLogger" Collapsed="true">
     <Position X="13.75" Y="5" Width="1.5" />

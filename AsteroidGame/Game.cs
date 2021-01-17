@@ -2,11 +2,14 @@
 using System.Windows.Forms;
 using System;
 using System.IO;
+using AsteroidGame.VisualObject;
 
-namespace AsteroidGame
+namespace AsteroidGame.VisualObject
 {
    static class Game 
     {
+        private static readonly Image _Image = Properties.Resources.fon;
+
         private static BufferedGraphicsContext __Contex;
         private static BufferedGraphics __Buffer;
 
@@ -59,23 +62,23 @@ namespace AsteroidGame
                 __GameObjects[i] = new Star(
                 new Point(300, (int)(i/1.5 * 10)),
                 new Point(- i, 0),
-               rnd.Next(0, 10));
+               rnd.Next(0, 5));
 
             }
-            for (int i = __GameObjects.Length / 2; i < __GameObjects.Length-1 ; i++)
-            {
-                __GameObjects[i] = new Star(
-                new Point(800, (int)(i / 2.5 * 20)),
-                new Point(-i, 0),
-                rnd.Next(0, 10));
+            //for (int i = __GameObjects.Length / 2; i < __GameObjects.Length-1 ; i++)
+            //{
+            //    __GameObjects[i] = new Star(
+            //    new Point(800, (int)(i / 2.5 * 20)),
+            //    new Point(-i, 0),
+            //    rnd.Next(0, 5));
 
-            }
+            //}
             for (int i = __GameObjects.Length -1; i < __GameObjects.Length ; i++)
             {
                 __GameObjects[i] = new Planet(
                     new Point(800, (i / 6 * 20)),
                     new Point(-10, 0),
-                   new Size(51, 51));
+                   new Size(100, 100));
             }
         }
         #endregion
@@ -84,9 +87,10 @@ namespace AsteroidGame
         {
             Graphics graphics = __Buffer.Graphics; // используем буфер и извлекаем обьекат графики
 
-            Image image = Image.FromFile("sci-fi-space-68758.jpg");
+          //  Image image = Image.FromFile("sci-fi-space-68758.jpg");
            // graphics = Graphics.FromImage(image); Пытался вставить кортинку . Но не мог разобраться . И за того что здавать дз уже заватр (((
             graphics.Clear(Color.Black);
+            graphics.DrawImage(_Image, 0, 0, 800, 700);
             
 
             

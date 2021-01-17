@@ -5,13 +5,20 @@ using System.IO;
 
 namespace ConsoleTest.Loggers
 {
-    internal class TextFileLogger : Logger
+    internal class TextFileLogger : Logger, IDisposable
+    // IDisposable интерфейс для закрытия файлов
     {
         private readonly TextWriter _Writer;
         public TextFileLogger(string FileName) //запрашиваем имя файла
         {
             _Writer = File.CreateText(FileName);
            // ((StreamWriter)_Writer).AutoFlush = true;// автоматически сброс с буфера на диск
+        }
+
+        public void Dispose()
+        {
+            Flush();
+            _Writer.Dispose();
         }
 
         public override void Flush()
