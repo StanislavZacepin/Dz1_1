@@ -6,9 +6,11 @@ using AsteroidGame.VisualObject;
 
 namespace AsteroidGame.VisualObject
 {
-    class Planet : ImageObject
+    class Planet : ImageObject 
     {
         private static readonly Image _Image = Properties.Resources.zemla2;
+        
+        
         public Planet(Point postion, Point Direction, int size):base(postion,Direction,new Size(size,size),_Image)
         {
             
@@ -19,7 +21,7 @@ namespace AsteroidGame.VisualObject
             graphics.DrawImage(_Image, _Position.X, _Position.Y, _Size.Width, _Size.Height) ;
         }
 
-        public override void BazeObject()
+        public override void Update()
         {
             _Position.X += _Direction.X;
 
@@ -27,6 +29,12 @@ namespace AsteroidGame.VisualObject
 
 
 
+        }
+        
+
+        public override void Dispose()
+        {
+             _Image.Dispose(); ;
         }
     }
 }

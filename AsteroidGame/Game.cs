@@ -17,6 +17,9 @@ namespace AsteroidGame.VisualObject
         private static VisualObject[] __GameObjects; // создания масива обьектов
         public static int Width { get; set; }
         public static int Height { get; set; }
+
+
+
         #region*** public static void Initialize(Form GameForm) Создания контекста и формирования буфера
         public static void Initialize(Form GameForm)
         {
@@ -51,6 +54,7 @@ namespace AsteroidGame.VisualObject
             for (int i = 0; i < 15; i++)
             {
                 game_objects.Add(new Asteroid(new Point(600, i * 20), new Point(15 - i, 20 - i), 20));
+                
        
             }
 
@@ -64,8 +68,11 @@ namespace AsteroidGame.VisualObject
                 game_objects.Add(new Planet(new Point(800, (int)(i / 2.0 * 10)), new Point(-i, 0), 100));
 
             }
-
-            __GameObjects = game_objects.ToArray();// из списк аделаем масив
+            for (int i = 0; i < 3; i++)
+            {
+                game_objects.Add(new Bullet(500));
+            }
+                __GameObjects = game_objects.ToArray();// из списк аделаем масив
             #endregion
 
         }
@@ -76,7 +83,7 @@ namespace AsteroidGame.VisualObject
             Graphics graphics = __Buffer.Graphics; // используем буфер и извлекаем обьекат графики
 
 
-            graphics.Clear(Color.Black);
+            //graphics.Clear(Color.Black);
             graphics.DrawImage(_Image, 0, 0, 800, 700);
             
 
@@ -94,8 +101,9 @@ namespace AsteroidGame.VisualObject
         #endregion
         private static void Update()
         {
-            foreach (var game_object in __GameObjects)
-                game_object.BazeObject();
+           
+            foreach (var __GameObjects in __GameObjects)
+                    __GameObjects.Update();
         }
     }
 }

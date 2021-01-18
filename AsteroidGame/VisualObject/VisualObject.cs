@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace AsteroidGame.VisualObject
 {
-    internal abstract class VisualObject
+    internal abstract class VisualObject: IDisposable
     {
         protected Point _Position; // Положения
         protected Point _Direction; // Вектор скорости
@@ -19,13 +19,9 @@ namespace AsteroidGame.VisualObject
 
         public abstract void Draw(Graphics graphics);
 
-        public abstract void BazeObject(); // Надеюсь я правельнопонял задание 2
+        public abstract void Update(); // Надеюсь я правельнопонял задание 2
 
-       
-
-
+        public abstract void Dispose();
         
-
-       
     }
 }

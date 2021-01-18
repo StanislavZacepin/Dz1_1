@@ -9,6 +9,7 @@ namespace AsteroidGame.VisualObject
     {
         private static readonly Image _Image = Image.FromFile("image/ast.png");
 
+        
         public int Power { get; set; }
 
         public Rectangle Rect => new Rectangle(_Position, _Size); // астеройд возвращает облост которую он занимает
@@ -19,10 +20,17 @@ namespace AsteroidGame.VisualObject
 
         }
 
-        public bool CheckCollision(ICollision obj) => Rect.IntersectsWith(obj.Rect); // выполнения проверки н астолкновения
+        public bool CheckCollision(ICollision obj) => Rect.IntersectsWith(obj.Rect); // выполнения проверки на столкновения
 
-        public override void BazeObject()
+        
+        public override void Update()
         {
+
+            //if (this.Rect == CheckCollision(ICollision))
+            //{
+            //    __Direction.X *= -1;  пока не решил эту задачку буду думать дальше и огда сделаю пришлю к следущему заданию
+            //}
+
             _Position.X += _Direction.X;
             _Position.Y += _Direction.Y;
 
@@ -34,6 +42,11 @@ namespace AsteroidGame.VisualObject
             if (_Position.X > Game.Width - 45) _Direction.X *= -1;
             // выход за другую зону
             if (_Position.Y > Game.Height - 65) _Direction.Y *= -1;
+        }
+
+        public override void Dispose()
+        {
+            _Image.Dispose();
         }
     }
 }

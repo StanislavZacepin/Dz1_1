@@ -18,9 +18,10 @@ namespace AsteroidGame.VisualObject
         public Bullet(int Position) 
             : base( new Point(0,Position), Point.Empty,new Size(__BulletSizeX,__BulletSizeY))
         {
+
         }
         //2. Переделать виртуальный метод Update в BaseObject в абстрактный и реализовать его в наследниках.
-        public override void BazeObject() => _Position.X += __BulletSpeed; // положения позицая Х будет увеличеватьсч на велечину скорости пули
+        public override void Update() => _Position.X += __BulletSpeed; // положения позицая Х будет увеличеватьсч на велечину скорости пули
 
         public override void Draw(Graphics graphics)
         {
@@ -29,6 +30,9 @@ namespace AsteroidGame.VisualObject
             graphics.DrawEllipse(Pens.White,rect);
         }
 
-        
+        public override void Dispose()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

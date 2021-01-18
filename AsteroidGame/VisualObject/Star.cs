@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace AsteroidGame.VisualObject
 {
-    class Star : ImageObject
+    class Star : ImageObject 
     {
         private static readonly Image _image = Properties.Resources.star;
         public  Star(Point Position, Point Direction, int Size)
@@ -23,12 +23,18 @@ namespace AsteroidGame.VisualObject
         }
        
 
-        public override void BazeObject()
+        public override void Update()
         {
             _Position.X += _Direction.X;
 
             if (_Position.X < 0) _Position.X = Game.Width + _Size.Width;
 
+        }
+
+     
+        public override void Dispose()
+        {
+            _image.Dispose();
         }
     }
 }
