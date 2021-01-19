@@ -15,6 +15,10 @@ namespace AsteroidGame.VisualObject
         private static BufferedGraphics __Buffer;
 
         private static VisualObject[] __GameObjects; // создания масива обьектов
+
+        private static Timer __Timer;
+        private static Bullet __Bullet;
+        private static SpaceShip __SpaceShip;
         public static int Width { get; set; }
         public static int Height { get; set; }
 
@@ -35,11 +39,33 @@ namespace AsteroidGame.VisualObject
             __Buffer = __Contex.Allocate(graphics, new Rectangle(0, 0, Width, Height));
             // формирования буфура указывая размеры где будет обресовка
 
-            Timer timer = new Timer { Interval = 100 };
-            timer.Tick += OnTimerTick;
-            timer.Start();
+            __Timer = new Timer { Interval = 100 };
+            __Timer.Tick += OnTimerTick;
+            __Timer.Start();
+
+            GameForm.KeyDown += OnGameFormKeyDown;
            
         }
+
+        private static void OnGameFormKeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.ControlKey:
+                    __Bullet = new Bullet(__SpaceShip.Rect.Y);
+                    break;
+
+                case Keys.Up:
+                    __SpaceShip.MoveUp();
+                    break;
+
+                case Keys.Down:
+                    __SpaceShip.MoveDown();
+                    break;
+            }
+        }
+
+
         #endregion
         private static void OnTimerTick(object sender, EventArgs e)
         {
@@ -51,9 +77,15 @@ namespace AsteroidGame.VisualObject
        
         {
             var game_objects = new List<VisualObject>();
-            for (int i = 0; i < 15; i++)
+
+            var rnd = new Random();
+            const int asteroid_count = 10;
+            const int asteroid_size = 25;
+            const int asteroid_max_speed = 20;
+            for (int i = 0; i < asteroid_count; i++)
             {
-                game_objects.Add(new Asteroid(new Point(600, i * 20), new Point(15 - i, 20 - i), 20));
+                game_objects.Add(new Asteroid(new Point(rnd.Next(0,Width),rnd.Next(0,Height)), new Point(-rnd.Next(0,asteroid_max_speed),
+                    0), asteroid_size));
                 
        
             }
@@ -73,8 +105,22 @@ namespace AsteroidGame.VisualObject
                 game_objects.Add(new Bullet(500));
             }
                 __GameObjects = game_objects.ToArray();// из списк аделаем масив
-            #endregion
 
+            __Bullet = new Bullet(200);
+            __SpaceShip = new SpaceShip(new Point(10, 400),
+                new Point(5,5),
+                new Size(20,20));
+            __SpaceShip.Destroyd += OnShipDestroyed;
+            #endregion
+        }
+
+        private static void OnShipDestroyed(object sender,EventArgs e)
+        {
+            __Timer.Stop();
+            var g = __Buffer.Graphics;
+            g.Clear(Color.DarkBlue);
+            g.DrawString("Game over!!!", new Font(FontFamily.GenericSerif, 60, FontStyle.Bold),Brushes.Red,200,100);
+            __Buffer.Render();
         }
 
         #region *** public static void Draw() будет рисовать что либо
@@ -96,6 +142,10 @@ namespace AsteroidGame.VisualObject
             foreach (var game_object in __GameObjects)
                 game_object.Draw(graphics);
 
+            __SpaceShip.Draw(graphics);
+            __Bullet?.Draw(graphics);
+
+            if (!__Timer.Enabled) return;
             __Buffer.Render();//выводим буфер
         }
         #endregion
@@ -103,7 +153,25 @@ namespace AsteroidGame.VisualObject
         {
            
             foreach (var __GameObjects in __GameObjects)
-                    __GameObjects.Update();
+                    __GameObjects?.Update();
+
+            __Bullet?.Update();
+
+            for(var i = 0; i < __GameObjects.Length; i++)
+            {
+                var obj = __GameObjects[i];
+
+                if(obj is ICollision collision_object)
+                {
+                    __SpaceShip.CheckCollision(collision_object);
+
+                    if (__Bullet?.CheckCollision(collision_object) != true) continue;
+
+                    __Bullet = null;
+                    __GameObjects[i] = null;
+                    System.Media.SystemSounds.Beep.Play();
+                }
+            }
         }
     }
 }
