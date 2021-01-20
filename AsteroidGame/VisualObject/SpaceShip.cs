@@ -70,5 +70,6 @@ namespace AsteroidGame.VisualObject
         }
 
     }
-    }
+   
 }
+

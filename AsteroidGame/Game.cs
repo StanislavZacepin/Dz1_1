@@ -1,14 +1,19 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 using System;
-using System.IO;
+
 using AsteroidGame.VisualObject;
 using System.Collections.Generic;
+using AsteroidGame.ConsoleLoggers;
+
+
+
 
 namespace AsteroidGame.VisualObject
 {
    static class Game 
     {
+
         private static readonly Image _Image = Properties.Resources.fon;
 
         private static BufferedGraphicsContext __Contex;
@@ -19,6 +24,14 @@ namespace AsteroidGame.VisualObject
         private static Timer __Timer;
         private static Bullet __Bullet;
         private static SpaceShip __SpaceShip;
+
+        //private static ColnsoleLogger<Asteroid> __ColnsoleLogger_Asteroid;
+        //private static ColnsoleLogger<Bullet> __ColnsoleLogger_Bullet;
+        //private static ColnsoleLogger<SpaceShip> __ColnsoleLogger_SpaseShip;
+        private static ColnsoleLogger __ConsoleLogger;
+
+       private static ColnsoleLogger.Action Show;
+
         public static int Width { get; set; }
         public static int Height { get; set; }
 
@@ -27,6 +40,8 @@ namespace AsteroidGame.VisualObject
         #region*** public static void Initialize(Form GameForm) Создания контекста и формирования буфера
         public static void Initialize(Form GameForm)
         {
+            
+
             if (!(GameForm.Width >= 1000 || GameForm.Height >= 1000))
             {
                 Width = GameForm.Width;
@@ -53,6 +68,7 @@ namespace AsteroidGame.VisualObject
             {
                 case Keys.ControlKey:
                     __Bullet = new Bullet(__SpaceShip.Rect.Y);
+                    Show?.Invoke();
                     break;
 
                 case Keys.Up:
@@ -76,41 +92,48 @@ namespace AsteroidGame.VisualObject
         public static void Load()
        
         {
+            
             var game_objects = new List<VisualObject>();
 
             var rnd = new Random();
             const int asteroid_count = 10;
             const int asteroid_size = 25;
             const int asteroid_max_speed = 20;
+            
+            __ConsoleLogger = new ColnsoleLogger();
+           Show += __ConsoleLogger.LogCreateAsteroid;
             for (int i = 0; i < asteroid_count; i++)
             {
                 game_objects.Add(new Asteroid(new Point(rnd.Next(0,Width),rnd.Next(0,Height)), new Point(-rnd.Next(0,asteroid_max_speed),
                     0), asteroid_size));
-                
+                Show?.Invoke();
        
             }
-
+            Show -= __ConsoleLogger.LogCreateAsteroid;
             for (int i = 0; i < 15; i++)
             {
                 game_objects.Add(new Star(new Point(800, (int)(i / 2.0*10)), new Point( - i, 10),15));
 
             }
+            Show += __ConsoleLogger.LogCreateBullet;
             for (int i = 0; i < 2; i++)
             {
                 game_objects.Add(new Planet(new Point(800, (int)(i / 2.0 * 10)), new Point(-i, 0), 100));
 
             }
-            for (int i = 0; i < 3; i++)
-            {
-                game_objects.Add(new Bullet(500));
-            }
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    game_objects.Add(new Bullet(500));
+            //}
                 __GameObjects = game_objects.ToArray();// из списк аделаем масив
-
-            __Bullet = new Bullet(200);
+            
+        
             __SpaceShip = new SpaceShip(new Point(10, 400),
                 new Point(5,5),
                 new Size(20,20));
             __SpaceShip.Destroyd += OnShipDestroyed;
+            
+
             #endregion
         }
 
@@ -129,7 +152,7 @@ namespace AsteroidGame.VisualObject
             Graphics graphics = __Buffer.Graphics; // используем буфер и извлекаем обьекат графики
 
 
-            //graphics.Clear(Color.Black);
+           // graphics.Clear(Color.Black);
             graphics.DrawImage(_Image, 0, 0, 800, 700);
             
 
