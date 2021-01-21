@@ -9,6 +9,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{55B702EC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleTest", "Tests\ConsoleTest\ConsoleTest.csproj", "{5D137C72-C7AA-404F-BE33-E7498A308CAD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dz2", "Dz2", "{938C8EBD-EEF8-491B-8BF9-0CD3DC3FEC45}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dz2_1", "Dz2_1\Dz2_1.csproj", "{5D249B07-7FE2-4A64-BC1F-59C442C3C8A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,12 +27,18 @@ Global
 		{5D137C72-C7AA-404F-BE33-E7498A308CAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D137C72-C7AA-404F-BE33-E7498A308CAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D137C72-C7AA-404F-BE33-E7498A308CAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D249B07-7FE2-4A64-BC1F-59C442C3C8A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D249B07-7FE2-4A64-BC1F-59C442C3C8A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D249B07-7FE2-4A64-BC1F-59C442C3C8A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D249B07-7FE2-4A64-BC1F-59C442C3C8A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5D137C72-C7AA-404F-BE33-E7498A308CAD} = {55B702EC-A83C-48D1-9B27-F0C21E2B2237}
+		{938C8EBD-EEF8-491B-8BF9-0CD3DC3FEC45} = {55B702EC-A83C-48D1-9B27-F0C21E2B2237}
+		{5D249B07-7FE2-4A64-BC1F-59C442C3C8A1} = {938C8EBD-EEF8-491B-8BF9-0CD3DC3FEC45}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1BC53DB5-3261-4EC6-AD7B-29B45ABA318A}

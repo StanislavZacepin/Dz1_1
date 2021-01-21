@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ConsoleTest.Loggers.Logger">
+    <Position X="9.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CgAAAAAAAAAAAAAAAAAAAAAAIQgAAEAAAAAAAAAIAAA=</HashCode>
+      <FileName>Loggers\Logger.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ConsoleTest.Loggers.CombineLogger" Collapsed="true">
+    <Position X="4.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAIAAAAAAAAAgAAAAAAAQAAAAIAAA=</HashCode>
+      <FileName>Loggers\CombineLogger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ConsoleTest.Loggers.ConsoleLogger" Collapsed="true">
+    <Position X="7" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>Loggers\ConsoleLogger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ConsoleTest.Loggers.DebugLogger" Collapsed="true">
+    <Position X="9.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>Loggers\DebugLogger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ConsoleTest.Loggers.TextFileLogger" Collapsed="true">
+    <Position X="11.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAACAAAAAAAAAAAgAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>Loggers\TextFileLogger.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ConsoleTest.Loggers.TraceLogger" Collapsed="true">
+    <Position X="13.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>Loggers\TraceLogger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

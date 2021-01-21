@@ -1,78 +1,93 @@
 ﻿using System;
+using ConsoleTest.Loggers;
+using System.Collections.Generic;
 
 namespace ConsoleTest
 {
     class Program
     {
+        private static int _X = 5;
+        private static int _Y = 0;
+        private static ILogger _Logger;
         static void Main(string[] args)
         {
-            #region *** Пример провекри на null
-            DateTime? time = null;
-
-            if (time != null)
+            var student = new Student
             {
-                DateTime t = (DateTime)time;
-                Console.WriteLine(time);
-            }
+                Surname = "Иванов",
+                Name = "Иван"
+            };
 
-            if (time.HasValue)
-            {
-               // DateTime t = time.GetValueOrDefault();
-                DateTime t = time.Value;
-                Console.WriteLine(time);
-            }
-            #endregion
-            //Vector2DClass unit =  Vector2DClass.Unit;
-            //Vector2DClass zero = Vector2DClass.Zero;  обращения к статическим полям
-
-            Vector2DClass v1 = new Vector2DClass();
-        }
-    }
-   public class Vector2DClass
-    {
-        // static Vector2DClass()
-        //{
-        //    Unit = new Vector2DClass(1, 1);
-        //    Zero = new Vector2DClass(0, 0);   для статический полей 
-        //}
-
-        public static readonly Vector2DClass Unit;
-        public static readonly Vector2DClass Zero;
-        public double _X { get; set; }
-        public double _Y { get; set; }
-        public Vector2DClass()
-        {
-
-        }
-
-        public double Length => Math.Sqrt(_X * _X + _Y * _Y); //Длина вектора
+            Console.WriteLine(student);
+            //_Logger = new TextFileLogger("test.log"); За место него создаем консольного логера
+            //_Logger = new ConsoleLogger(); Заместо него создаем и на конслоль и в фаил
+            // _Logger = new CombineLogger(new ConsoleLogger(), new TextFileLogger("test.log"));
+            _Logger = student;
        
-        public Vector2DClass(double _X,double _y)
-        {
-            this._X = _X;
-            this._Y = _Y;
-        }
-    
-        public static Vector2DClass operator +(Vector2DClass a, Vector2DClass b) // перегрузка операторов
-        {
-            return new Vector2DClass(a._X + b._X, a._Y + a._Y);
-        }
-        public static bool operator ==(Vector2DClass a, Vector2DClass b)
-        {
-            return a._X == b._X && a._Y == b._Y;
-        }
-        public static bool operator !=(Vector2DClass a, Vector2DClass b)
-        {
-            return !(a == b);
-        }
-        public static implicit /*implicit переопределяем не явный оператор типов*/ operator double/* в double   из*/ (Vector2DClass v) // Оператор поведения
-        {
-            return v.Length;
-        }
+            
+            _Logger.LogInformation("Приложение запущено");
 
-        public static explicit /*explicit явное преобразование оператор типов*/ operator int/* в int   из*/ (Vector2DClass v) // Оператор поведения
-        {
-            return (int)v.Length;
+            try
+            {
+                var z = _X / _Y;
+            }
+            catch (DivideByZeroException )
+            {
+
+                _Logger.LogError($"Ошибка при делении {_X} на 0");
+            }
+
+            var students = new List<Student>();
+
+            var rnd = new Random();
+
+            for (var i = 1; i < 10; i++)
+            {
+                students.Add(new Student
+                {
+                    Surname = $"Фамилия-{i}",
+                    Name = $"Имя-{i}",
+                    Rating = rnd.Next(1,6)
+                });
+            }
+
+            students.Sort();
+
+            if (!students.Contains(student))
+            {
+                Console.WriteLine("Журналист отсуствует в списке!");
+            }
+            
+            //TextFileLogger text_logger = null;
+
+            //try
+            //{
+            //    text_logger = new TextFileLogger("test2.log");
+
+            //    text_logger.LogInformation("Info");
+            //    text_logger.LogWarning("Warn");
+            //    text_logger.LogError("Err");
+            //    text_logger.LogCritical("Crit");
+            //}
+            //finally
+            //{
+            //    if(text_logger != null)
+            //    text_logger.Dispose();
+            //}
+           
+            using(var text_logger = new TextFileLogger("test2.log")) 
+            {
+                text_logger.LogInformation("Info");
+                text_logger.LogWarning("Warn");
+                text_logger.LogError("Err");
+                text_logger.LogCritical("Crit");
+            }
+
+
+            Console.WriteLine("Нажмите Enter для выхода");
+            Console.ReadKey();
+
+            _Logger.LogInformation("Работа приложения завершена");
+            /*не нужно если перевели на ватоматическую функцыю сброаса на диск */_Logger.Flush(); // Сброс с буфера на диск
         }
     }
 }

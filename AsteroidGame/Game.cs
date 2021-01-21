@@ -2,22 +2,33 @@
 using System.Windows.Forms;
 using System;
 using System.IO;
+using AsteroidGame.VisualObject;
+using System.Collections.Generic;
 
-namespace AsteroidGame
+namespace AsteroidGame.VisualObject
 {
    static class Game 
     {
+        private static readonly Image _Image = Properties.Resources.fon;
+
         private static BufferedGraphicsContext __Contex;
         private static BufferedGraphics __Buffer;
 
         private static VisualObject[] __GameObjects; // создания масива обьектов
         public static int Width { get; set; }
         public static int Height { get; set; }
+
+
+
         #region*** public static void Initialize(Form GameForm) Создания контекста и формирования буфера
         public static void Initialize(Form GameForm)
         {
-            Width = GameForm.Width;
-            Height = GameForm.Height;
+            if (!(GameForm.Width >= 1000 || GameForm.Height >= 1000))
+            {
+                Width = GameForm.Width;
+                Height = GameForm.Height;
+            }
+            else throw new ArgumentOutOfRangeException();
 
             __Contex = BufferedGraphicsManager.Current; //создания контекста
             Graphics graphics = GameForm.CreateGraphics(); // обьект отвечающий за рисования
@@ -39,54 +50,41 @@ namespace AsteroidGame
         public static void Load()
        
         {
-
-            const int visual_object_count = 60; // для масива . количество обьектов
-            __GameObjects = new VisualObject[visual_object_count];
-
-            Random rnd = new Random();
-
-            for( int i = 0; i < __GameObjects.Length/3; i++)
+            var game_objects = new List<VisualObject>();
+            for (int i = 0; i < 15; i++)
             {
-                __GameObjects[i] = new VisualObject(
-                new Point(600, i * 20),
-                new Point(15 - i, 20 - i),
-                new Size(20, 20));
+                game_objects.Add(new Asteroid(new Point(600, i * 20), new Point(15 - i, 20 - i), 20));
                 
+       
             }
-           
-            for (int i = __GameObjects.Length / 3; i < __GameObjects.Length/2 ; i++)
+
+            for (int i = 0; i < 15; i++)
             {
-                __GameObjects[i] = new Star(
-                new Point(300, (int)(i/1.5 * 10)),
-                new Point(- i, 0),
-               rnd.Next(0, 10));
+                game_objects.Add(new Star(new Point(800, (int)(i / 2.0*10)), new Point( - i, 10),15));
 
             }
-            for (int i = __GameObjects.Length / 2; i < __GameObjects.Length-1 ; i++)
+            for (int i = 0; i < 2; i++)
             {
-                __GameObjects[i] = new Star(
-                new Point(800, (int)(i / 2.5 * 20)),
-                new Point(-i, 0),
-                rnd.Next(0, 10));
+                game_objects.Add(new Planet(new Point(800, (int)(i / 2.0 * 10)), new Point(-i, 0), 100));
 
             }
-            for (int i = __GameObjects.Length -1; i < __GameObjects.Length ; i++)
+            for (int i = 0; i < 3; i++)
             {
-                __GameObjects[i] = new Planet(
-                    new Point(800, (i / 6 * 20)),
-                    new Point(-10, 0),
-                   new Size(51, 51));
+                game_objects.Add(new Bullet(500));
             }
+                __GameObjects = game_objects.ToArray();// из списк аделаем масив
+            #endregion
+
         }
-        #endregion
+
         #region *** public static void Draw() будет рисовать что либо
         public static void Draw()
         {
             Graphics graphics = __Buffer.Graphics; // используем буфер и извлекаем обьекат графики
 
-            Image image = Image.FromFile("sci-fi-space-68758.jpg");
-           // graphics = Graphics.FromImage(image); Пытался вставить кортинку . Но не мог разобраться . И за того что здавать дз уже заватр (((
-            graphics.Clear(Color.Black);
+
+            //graphics.Clear(Color.Black);
+            graphics.DrawImage(_Image, 0, 0, 800, 700);
             
 
             
@@ -103,8 +101,9 @@ namespace AsteroidGame
         #endregion
         private static void Update()
         {
-            foreach (var game_object in __GameObjects)
-                game_object.Update();
+           
+            foreach (var __GameObjects in __GameObjects)
+                    __GameObjects.Update();
         }
     }
 }

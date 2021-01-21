@@ -2,19 +2,23 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
+using AsteroidGame.VisualObject;
 
-namespace AsteroidGame
+namespace AsteroidGame.VisualObject
 {
-    class Planet : VisualObject
+    class Planet : ImageObject 
     {
-        public Planet(Point postion, Point Direction, Size size):base(postion,Direction,size)
+        private static readonly Image _Image = Properties.Resources.zemla2;
+        
+        
+        public Planet(Point postion, Point Direction, int size):base(postion,Direction,new Size(size,size),_Image)
         {
             
         }
         public override void Draw(Graphics graphics)
         {
-            SolidBrush silverBrush = new SolidBrush(Color.Silver);
-            graphics.FillEllipse(silverBrush, _Position.X, _Position.Y, _Size.Width, _Size.Height) ;
+            
+            graphics.DrawImage(_Image, _Position.X, _Position.Y, _Size.Width, _Size.Height) ;
         }
 
         public override void Update()
@@ -25,6 +29,12 @@ namespace AsteroidGame
 
 
 
+        }
+        
+
+        public override void Dispose()
+        {
+             _Image.Dispose(); ;
         }
     }
 }
