@@ -9,18 +9,17 @@ namespace AsteroidGame.VisualObject
 {
     class Heel : ImageObject, ICollision
     {
+        private static readonly Image _image = Properties.Resources.heal;
         public Heel(Point Position, Point Direction, Size size, Image image) 
             : base(Position, Direction, size, image)
         {
 
         }
 
-        public Rectangle Rect => throw new NotImplementedException();
+        public Rectangle Rect   => new Rectangle(_Position, _Size);
 
-        public bool CheckCollision(ICollision obj)
-        {
-            throw new NotImplementedException();
-        }
+        public bool CheckCollision(ICollision obj) => Rect.IntersectsWith(obj.Rect);
+
 
         public override void Dispose()
         {
