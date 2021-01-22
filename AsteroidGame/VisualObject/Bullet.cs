@@ -11,7 +11,7 @@ namespace AsteroidGame.VisualObject
     {
         private const int __BulletSizeX = 20;
         private const int __BulletSizeY = 5;
-        private const int __BulletSpeed = 3;
+        private const int __BulletSpeed = 15;
 
        
 
@@ -28,6 +28,12 @@ namespace AsteroidGame.VisualObject
             var rect = Rect;
             graphics.FillEllipse(Brushes.Red, rect);
             graphics.DrawEllipse(Pens.White,rect);
+        }
+
+        public void Reset(int Y)
+        {
+            _Position = new Point(0, Y);
+            Enabled = true;
         }
 
         public override void Dispose()

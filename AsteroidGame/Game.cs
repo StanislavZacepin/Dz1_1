@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 using System;
-
+using System.Linq;
 using AsteroidGame.VisualObject;
 using System.Collections.Generic;
 using AsteroidGame.ConsoleLoggers;
@@ -22,18 +22,19 @@ namespace AsteroidGame.VisualObject
         private static VisualObject[] __GameObjects; // создания масива обьектов
 
         private static Timer __Timer;
-        private static Bullet __Bullet;
+        
+        private static List<Bullet> __Bullets = new (); 
         private static SpaceShip __SpaceShip;
-
-        //private static ColnsoleLogger<Asteroid> __ColnsoleLogger_Asteroid;
-        //private static ColnsoleLogger<Bullet> __ColnsoleLogger_Bullet;
-        //private static ColnsoleLogger<SpaceShip> __ColnsoleLogger_SpaseShip;
+        
+       
         private static ColnsoleLogger __ConsoleLogger;
 
        private static ColnsoleLogger.Action Show;
 
         public static int Width { get; set; }
         public static int Height { get; set; }
+
+        private static int Count { get; set; }
 
 
 
@@ -67,7 +68,13 @@ namespace AsteroidGame.VisualObject
             switch (e.KeyCode)
             {
                 case Keys.ControlKey:
-                    __Bullet = new Bullet(__SpaceShip.Rect.Y);
+                    var disabled_bullet = __Bullets.FirstOrDefault(b => !b.Enabled);
+                    if(disabled_bullet != null)
+                    {
+                        disabled_bullet.Reset(__SpaceShip.Rect.Y); 
+                    }
+                    else
+                     __Bullets.Add(new Bullet(__SpaceShip.Rect.Y));
                     Show?.Invoke();
                     break;
 
@@ -87,13 +94,15 @@ namespace AsteroidGame.VisualObject
         {
             Update();
             Draw();
+
         }
         #region*** public static void Load() масив обьектов
         public static void Load()
        
         {
             
-            var game_objects = new List<VisualObject>();
+            var game_objects = new List<VisualObject>(30);
+
 
             var rnd = new Random();
             const int asteroid_count = 10;
@@ -112,26 +121,34 @@ namespace AsteroidGame.VisualObject
             Show -= __ConsoleLogger.LogCreateAsteroid;
             for (int i = 0; i < 15; i++)
             {
-                game_objects.Add(new Star(new Point(800, (int)(i / 2.0*10)), new Point( - i, 10),15));
+                game_objects.Add(new Star(new  Point(rnd.Next(0, Width), rnd.Next(0, Height)), new Point( - i, 10),15));
 
             }
             Show += __ConsoleLogger.LogCreateBullet;
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 1; i++)
             {
                 game_objects.Add(new Planet(new Point(800, (int)(i / 2.0 * 10)), new Point(-i, 0), 100));
 
             }
-            //for (int i = 0; i < 3; i++)
-            //{
-            //    game_objects.Add(new Bullet(500));
-            //}
+            game_objects.Add(new Heal(new Point(rnd.Next(0, Width), rnd.Next(0, Height)),  //Создания хила
+                new Point(-10, 10),
+                new Size(25, 25), Properties.Resources.heal));
+
+
                 __GameObjects = game_objects.ToArray();// из списк аделаем масив
+            __Bullets.Clear();
+
+            //foreach (var bullet in __Bullets)
+            //    bullet.Draw(graphics);
+
             
-        
+            
             __SpaceShip = new SpaceShip(new Point(10, 400),
                 new Point(5,5),
                 new Size(20,20));
             __SpaceShip.Destroyd += OnShipDestroyed;
+
+
             
 
             #endregion
@@ -154,10 +171,14 @@ namespace AsteroidGame.VisualObject
 
            // graphics.Clear(Color.Black);
             graphics.DrawImage(_Image, 0, 0, 800, 700);
-            
 
+           
+            var g = __Buffer.Graphics;
+          
             
-            
+            g.DrawString(Count.ToString(), new Font(FontFamily.GenericSerif, 30, FontStyle.Regular), Brushes.Gray, 700, 0);
+
+            g.DrawString("HP"+__SpaceShip._Energy.ToString(), new Font(FontFamily.GenericSerif, 30, FontStyle.Regular), Brushes.Red, 0, 0);
 
             //graphics.DrawRectangle(Pens.White, new Rectangle(100, 100, 200, 200));// рисуем триугольник
             //graphics.FillEllipse(Brushes.Red, new Rectangle(100, 100, 200, 200));
@@ -166,7 +187,8 @@ namespace AsteroidGame.VisualObject
                 game_object.Draw(graphics);
 
             __SpaceShip.Draw(graphics);
-            __Bullet?.Draw(graphics);
+
+            __Bullets.ForEach(bullet => bullet.Draw(graphics));
 
             if (!__Timer.Enabled) return;
             __Buffer.Render();//выводим буфер
@@ -178,23 +200,42 @@ namespace AsteroidGame.VisualObject
             foreach (var __GameObjects in __GameObjects)
                     __GameObjects?.Update();
 
-            __Bullet?.Update();
+            __Bullets.ForEach(bullet => bullet.Update());
 
-            for(var i = 0; i < __GameObjects.Length; i++)
+            foreach (var o in __GameObjects.Where(o => o.Enabled))
             {
-                var obj = __GameObjects[i];
 
-                if(obj is ICollision collision_object)
+                if (o is not ICollision obj) continue;
+
+                if (o is  Heal heal)
                 {
-                    __SpaceShip.CheckCollision(collision_object);
+                    if (__SpaceShip.CheckCollision(heal))
+                        __SpaceShip._Energy += 5;
+                }
 
-                    if (__Bullet?.CheckCollision(collision_object) != true) continue;
+                    if (__SpaceShip.CheckCollision(obj))
+                {
+                    o.Enabled = false;
+                    continue;
+                }
+                //if (__Bullets.Any(b=>b.Enabled && b.CheckCollision(obj)))
+                //  {
+                //      ((VisualObject)obj).Enabled = false;
+                //      continue;
+                //  } 
 
-                    __Bullet = null;
-                    __GameObjects[i] = null;
-                    System.Media.SystemSounds.Beep.Play();
+                foreach (var bullet in __Bullets.Where(b => b.Enabled))
+                {
+                    if (!bullet.CheckCollision(obj)) continue;
+                   o.Enabled = false;
+                    bullet.Enabled = false;
+                    Count++;
                 }
             }
+
+            foreach (var bullet in __Bullets.Where(b => b.Enabled && b.Rect.X > Width))
+                bullet.Enabled = false;
+
         }
     }
 }

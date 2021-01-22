@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace AsteroidGame.VisualObject
 {
-    class Heel : ImageObject, ICollision
+  internal  class Heal : ImageObject, ICollision
     {
         private static readonly Image _image = Properties.Resources.heal;
-        public Heel(Point Position, Point Direction, Size size, Image image) 
+        public Heal(Point Position, Point Direction, Size size, Image image) 
             : base(Position, Direction, size, image)
         {
 
@@ -28,6 +28,7 @@ namespace AsteroidGame.VisualObject
 
         public override void Update()
         {
+            if (!Enabled) return;
             _Position.X += _Direction.X;
 
             if (_Position.X < 0) _Position.X = Game.Width + _Size.Width;

@@ -26,10 +26,7 @@ namespace AsteroidGame.VisualObject
         public override void Update()
         {
 
-            //if (this.Rect == CheckCollision(ICollision))
-            //{
-            //    __Direction.X *= -1;  пока не решил эту задачку буду думать дальше и огда сделаю пришлю к следущему заданию
-            //}
+            if (!Enabled) return;
 
             _Position.X += _Direction.X;
             _Position.Y += _Direction.Y;
