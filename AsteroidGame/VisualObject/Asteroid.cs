@@ -12,6 +12,7 @@ namespace AsteroidGame.VisualObject
 
         public int Power { get; set; } = 3;
 
+
         public Rectangle Rect => new Rectangle(_Position, _Size); // астеройд возвращает облост которую он занимает
 
         public Asteroid(Point Position, Point Direction, int size) 
