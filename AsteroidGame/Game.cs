@@ -27,7 +27,12 @@ namespace AsteroidGame.VisualObject
 
         private static List<Bullet> __Bullets = new();
         private static SpaceShip __SpaceShip;
+        private static bool nexstLvL = false;
 
+       static Random rnd = new Random();
+
+        const int asteroid_size = 25;
+        const int asteroid_max_speed = 20;
 
         private static ColnsoleLogger __ConsoleLogger;
 
@@ -39,8 +44,10 @@ namespace AsteroidGame.VisualObject
         private static int Count { get; set; }
 
         public static int asteroid_count { get; set; } = 10;
+        public static int count_lvl { get; set; } = 8;
 
-        private static int Count_lvl { get; set; } = 10;
+
+
 
 
         #region*** public static void Initialize(Form GameForm) Создания контекста и формирования буфера
@@ -102,18 +109,17 @@ namespace AsteroidGame.VisualObject
 
         }
         #region*** public static void Load() масив обьектов
-        public static void Load(int asteroid_count)
+        public static void Load()
 
         {
-
+            nexstLvL = false;
             var game_Asteroids = new List<VisualObject>(11);
             var game_stars_and_planet = new List<VisualObject>(17);
+           
 
+           
 
-            var rnd = new Random();
-            
-            const int asteroid_size = 25;
-            const int asteroid_max_speed = 20;
+           
 
             __ConsoleLogger = new ColnsoleLogger();
             Show += __ConsoleLogger.LogCreateAsteroid;
@@ -208,30 +214,46 @@ namespace AsteroidGame.VisualObject
         #endregion
         private static void Update()
         {
+            var game_Asteroids_lvl_nexst = new List<VisualObject>();
 
+            if (nexstLvL == true)
+            {
+
+                game_Asteroids_lvl_nexst.Add(new Asteroid(new Point(rnd.Next(1, Width), rnd.Next(1, Height)), new Point(-rnd.Next(0, asteroid_max_speed),
+                    0), asteroid_size));
+                Graphics g = __Buffer.Graphics;
+                foreach (var game_object in game_Asteroids_lvl_nexst)
+                    game_object.Draw(g);
+                __Buffer.Render();
+                nexstLvL = false;
+                
+            }
             foreach (var __GameObjects in __GameObjects_Aster)
+                __GameObjects?.Update();
+            foreach (var __GameObjects in __Game_Stars_and_planet)
+                __GameObjects?.Update();
+            
+            foreach (var __GameObjects in game_Asteroids_lvl_nexst)
                 __GameObjects?.Update();
 
             __Bullets.ForEach(bullet => bullet.Update());
-
-           
-                   
-           
 
             foreach (var o in __GameObjects_Aster.Where(o => o.Enabled))
             {
 
                 if (o is not ICollision obj) continue;
 
+
                 if (o is Heal heal)
                 {
                     if (__SpaceShip.CheckCollision(heal))
                         __SpaceShip._Energy += 5;
                 }
-
                 if (__SpaceShip.CheckCollision(obj))
                 {
-                    o.Enabled = false;
+                  
+                    count_lvl--;
+                    o.Enabled = false;                    
                     continue;
                 }
                 //if (__Bullets.Any(b=>b.Enabled && b.CheckCollision(obj)))
@@ -239,26 +261,30 @@ namespace AsteroidGame.VisualObject
                 //      ((VisualObject)obj).Enabled = false;
                 //      continue;
                 //  } 
+               
+                    foreach (var bullet in __Bullets.Where(b => b.Enabled))
+                    {
+                        if (!bullet.CheckCollision(obj)) continue;
 
-                foreach (var bullet in __Bullets.Where(b => b.Enabled))
-                {
-                    if (!bullet.CheckCollision(obj)) continue;
 
-                    //foreach (var b in __GameObjects_Aster.Where(b => !b.Enabled))
-                    //{
-                    //    if (__GameObjects_Aster.All<Asteroid>(false)) пока не разобрался как сделать условия ( когда все элементы выключаться запустить зановго лоад ток  на +1 астероид
-                    //    {
-                    //        Load(Count_lvl + 1);
-                    //    }
-                    //}
-                    o.Enabled = false;
-                    bullet.Enabled = false;
-                    Count++;
-                   
-                   
-                    
-                   
-                    
+                        bullet.Enabled = false;
+                        o.Enabled = false;
+                        
+                        count_lvl--;
+                        Count++;
+                        if (count_lvl == 0)
+                        {
+                        
+                            count_lvl = asteroid_count -= 2;
+                        asteroid_count++;
+                        foreach (var d in __GameObjects_Aster.Where(d => !d.Enabled))
+                        {
+                            d.Enabled = true;
+                            
+                        }
+                        }
+                
+
                 }
             }
 

@@ -28,7 +28,7 @@ namespace AsteroidGame
             #endregion
             GameWindow.Show();
             Game.Initialize(GameWindow);
-            Game.Load(10);
+            Game.Load();
             Game.Draw();
 
             Application.Run(GameWindow);
