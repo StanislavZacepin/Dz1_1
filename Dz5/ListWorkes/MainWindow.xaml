@@ -15,6 +15,13 @@
             <ComboBox Margin="-500,5,35,0" x:Name="__cbListWorkes" Width="172" Height="24" Loaded="__cbListWorkes_Loaded" DropDownOpened="__cbListWorkes_DropDownOpened" SelectionChanged="__cbListWorkes_SelectionChanged"/>
             <ComboBox Margin="500,-24,0,0" x:Name="__cbListDepartment" Width="172" Loaded="__cbListDepartment_Loaded" DropDownOpened="__cbListDepartment_DropDownOpened" SelectionChanged="__cbListDepartment_SelectionChanged"/>
         </StackPanel>
+        <TextBox Name="__tbWorkes" HorizontalAlignment="Right" Margin="0,223,413,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsEnabled="False" KeyDown="__tbWorkes_KeyDown"/>
+        <TextBox Name="__tbDepar" HorizontalAlignment="Left" Margin="412,222,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsEnabled="False"/>
+        <CheckBox x:Name="__cbChange" Content="Замена" HorizontalAlignment="Right" Margin="0,270,382,0" Grid.Row="1" VerticalAlignment="Top" IsEnabled="False" Click="__cbChange_Click"/>
+        <CheckBox x:Name="__cbAdd" Content="Добавить" HorizontalAlignment="Right" Margin="0,290,370,0" Grid.Row="1" VerticalAlignment="Top" IsEnabled="False" Click="__cbAdd_Click"/>
+        <Label Content="Работники" HorizontalAlignment="Left" Margin="277,190,0,0" Grid.Row="1" VerticalAlignment="Top" Width="93"/>
+        <Label Content="Департамен" HorizontalAlignment="Left" Margin="422,190,0,0" Grid.Row="1" VerticalAlignment="Top" Width="93"/>
+        <CheckBox x:Name="__cbDel" Content="Удалить" HorizontalAlignment="Right" Margin="0,310,379,0" Grid.Row="1" VerticalAlignment="Top" IsEnabled="False" Click="___cbDel_Click"/>
 
 
     </Grid>

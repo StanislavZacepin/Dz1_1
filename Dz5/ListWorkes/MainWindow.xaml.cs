@@ -21,27 +21,35 @@ namespace ListWorkes
     /// </summary>
     public partial class MainWindow : Window
     {
-       // public static List<string> Workes { get; set; } 
+        // public static List<string> Workes { get; set; } 
         //public static List<string> Depar { get; set; }
+
+        //public delegate void  Action (object sender, EventArgs e);
+        //   Action action;
+
         public MainWindow()
         {
             InitializeComponent();
-           
+            // action = __cbListWorkes_DropDownOpened;
+            //action += __cbListDepartment_DropDownOpened;
+
+
+
         }
 
-        public void GenerateList(ref List<string> __list,string txt)
+        public void GenerateList(ref List<string> __list, string txt)
         {
-           
-               var component = txt.Split(';');
-            foreach(var item in component)
+
+            var component = txt.Split(';');
+            foreach (var item in component)
             {
                 __list.Add(item);
             }
-            
+
         }
-        public  void Employee(ref List<string> __list)
+        public void Employee(ref List<string> __list)
         {
-           
+
 
             #region*** Список имен
             string listWork = "Воеводина Екатерина Владимировна;" +
@@ -85,9 +93,9 @@ namespace ListWorkes
             GenerateList(ref __list, listWork);
 
         }
-        public  void Department(ref List<string> __list)
+        public void Department(ref List<string> __list)
         {
-            
+
 
             #region *** Список Департаментов
             string listDepar = "социологииДоцент;" +
@@ -129,7 +137,7 @@ namespace ListWorkes
             #endregion
 
             GenerateList(ref __list, listDepar);
-           
+
         }
 
         private void __cbListWorkes_Loaded(object sender, RoutedEventArgs e)
@@ -141,7 +149,7 @@ namespace ListWorkes
             {
                 __cbListWorkes.Items.Add(item);
             }
-    
+
         }
 
         private void __cbListDepartment_Loaded(object sender, RoutedEventArgs e)
@@ -157,26 +165,30 @@ namespace ListWorkes
 
         private void __cbListWorkes_DropDownOpened(object sender, EventArgs e)
         {
-            __cbListWorkes.IsDropDownOpen = true;
-
+            //    if(!__cbListWorkes.IsDropDownOpen)
+            //    action(this, e);
+            // когда удаляю DropDownOpened методы и удалю их с событий пишет ошибки не знаю как убрать поэтому оставил
         }
 
         private void __cbListDepartment_DropDownOpened(object sender, EventArgs e)
         {
-
+            // когда удаляю DropDownOpened методы и удалю их с событий пишет ошибки не знаю как убрать поэтому оставил
         }
 
         private void __cbListWorkes_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        { 
+        {
             var index = __cbListWorkes.SelectedIndex;
-            if (__cbListWorkes.SelectedIndex== index)
+            if (__cbListWorkes.SelectedIndex == index)
             {
                 __cbListDepartment.SelectedIndex = index;
-            }
-            
-
-
-            
+                __tbWorkes.IsEnabled = true;
+                if (__cbAdd.IsEnabled == false && __cbChange.IsEnabled == false)
+                {
+                    __cbAdd.IsEnabled = true;
+                    __cbChange.IsEnabled = true;
+                    __cbDel.IsEnabled = true;
+                }
+             }
         }
 
         private void __cbListDepartment_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -185,7 +197,58 @@ namespace ListWorkes
             if (__cbListDepartment.SelectedIndex == index)
             {
                 __cbListWorkes.SelectedIndex = index;
+                __tbDepar.IsEnabled = true;
+                if (__cbAdd.IsEnabled == false && __cbChange.IsEnabled == false)
+                {
+                    __cbAdd.IsEnabled = true;
+                    __cbChange.IsEnabled = true;
+                    __cbDel.IsEnabled = true;
+                }
+            }
+        }
+
+        private void __tbWorkes_KeyDown(object sender, KeyEventArgs e)
+        {
+           // if(this!=null)
+            if(e.Key == Key.Enter)
+            {
+                    if (__cbAdd.IsChecked == true)
+                    {
+                    __cbListWorkes.Items.Add(this);
+                        
+                    }
+            }
+        }
+
+        private void __cbChange_Click(object sender, RoutedEventArgs e)
+        {
+            if(__cbChange.IsChecked == true)
+            {
+                __cbAdd.IsChecked = false;
+                __cbDel.IsChecked = false;
+            }
+            
+        }
+
+        private void __cbAdd_Click(object sender, RoutedEventArgs e)
+        {
+            if (__cbAdd.IsChecked == true)
+            {
+                __cbChange.IsChecked = false;
+                __cbDel.IsChecked = false;
+            }
+           
+        }
+
+        private void ___cbDel_Click(object sender, RoutedEventArgs e)
+        {
+            if (__cbDel.IsChecked == true)
+            {
+                __cbAdd.IsChecked = false;
+                __cbChange.IsChecked = false;
+
             }
         }
     }
 }
+
