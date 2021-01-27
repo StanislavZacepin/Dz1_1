@@ -181,6 +181,8 @@ namespace ListWorkes
             if (__cbListWorkes.SelectedIndex == index)
             {
                 __cbListDepartment.SelectedIndex = index;
+               
+               
             }
 
 
