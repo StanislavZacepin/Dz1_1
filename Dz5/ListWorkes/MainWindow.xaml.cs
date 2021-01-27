@@ -85,9 +85,9 @@ namespace ListWorkes
             GenerateList(ref __list, listWork);
 
         }
-        public  void Department()
+        public  void Department(ref List<string> __list)
         {
-            List<string> Depar = new List<string>();
+            
 
             #region *** Список Департаментов
             string listDepar = "социологииДоцент;" +
@@ -128,7 +128,7 @@ namespace ListWorkes
 
             #endregion
 
-            GenerateList(ref Depar, listDepar);
+            GenerateList(ref __list, listDepar);
            
         }
 
@@ -142,6 +142,50 @@ namespace ListWorkes
                 __cbListWorkes.Items.Add(item);
             }
     
+        }
+
+        private void __cbListDepartment_Loaded(object sender, RoutedEventArgs e)
+        {
+            List<string> Depar = new List<string>();
+
+            Department(ref Depar);
+            foreach (var item in Depar)
+            {
+                __cbListDepartment.Items.Add(item);
+            }
+        }
+
+        private void __cbListWorkes_DropDownOpened(object sender, EventArgs e)
+        {
+            __cbListWorkes.IsDropDownOpen = true;
+
+        }
+
+        private void __cbListDepartment_DropDownOpened(object sender, EventArgs e)
+        {
+
+        }
+
+        private void __cbListWorkes_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        { 
+            var index = __cbListWorkes.SelectedIndex;
+            if (__cbListWorkes.SelectedIndex== index)
+            {
+                __cbListDepartment.SelectedIndex = index;
+            }
+            
+
+
+            
+        }
+
+        private void __cbListDepartment_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var index = __cbListDepartment.SelectedIndex;
+            if (__cbListDepartment.SelectedIndex == index)
+            {
+                __cbListWorkes.SelectedIndex = index;
+            }
         }
     }
 }
