@@ -12,7 +12,7 @@
             <RowDefinition Height="195*"/>
         </Grid.RowDefinitions>
         <StackPanel Margin="0,0,35,217" Grid.RowSpan="2" Height="195" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="705">
-            <ComboBox Margin="-500,5,35,0" x:Name="__cbListWorkes" Width="172" Height="24" Loaded="__cbListWorkes_Loaded" DropDownOpened="__cbListWorkes_DropDownOpened" SelectionChanged="__cbListWorkes_SelectionChanged"/>
+            <ComboBox Margin="-500,5,35,0" x:Name="__cbListWorkes" Width="172" Height="24" Loaded="__cbListWorkes_Loaded" DropDownOpened="__cbListWorkes_DropDownOpened"/>
             <ComboBox Margin="500,-24,0,0" x:Name="__cbListDepartment" Width="172" Loaded="__cbListDepartment_Loaded" DropDownOpened="__cbListDepartment_DropDownOpened" SelectionChanged="__cbListDepartment_SelectionChanged"/>
         </StackPanel>
 

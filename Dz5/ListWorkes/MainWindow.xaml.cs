@@ -21,12 +21,20 @@ namespace ListWorkes
     /// </summary>
     public partial class MainWindow : Window
     {
-       // public static List<string> Workes { get; set; } 
+        // public static List<string> Workes { get; set; } 
         //public static List<string> Depar { get; set; }
+
+     //public delegate void  Action (object sender, EventArgs e);
+     //   Action action;
+
         public MainWindow()
         {
             InitializeComponent();
-           
+            // action = __cbListWorkes_DropDownOpened;
+            //action += __cbListDepartment_DropDownOpened;
+
+
+
         }
 
         public void GenerateList(ref List<string> __list,string txt)
@@ -155,16 +163,17 @@ namespace ListWorkes
             }
         }
 
-        private void __cbListWorkes_DropDownOpened(object sender, EventArgs e)
-        {
-            __cbListWorkes.IsDropDownOpen = true;
+        //private void __cbListWorkes_DropDownOpened(object sender, EventArgs e)
+        //{
+        //    if(!__cbListWorkes.IsDropDownOpen)
+        //    action(this, e);
 
-        }
+        //}
 
-        private void __cbListDepartment_DropDownOpened(object sender, EventArgs e)
-        {
-
-        }
+        //private void __cbListDepartment_DropDownOpened(object sender, EventArgs e)
+        //{
+            
+        //}
 
         private void __cbListWorkes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         { 
