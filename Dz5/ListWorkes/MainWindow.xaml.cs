@@ -26,7 +26,7 @@ namespace ListWorkes
 
         //public delegate void  Action (object sender, EventArgs e);
         //   Action action;
-
+       
         public MainWindow()
         {
             InitializeComponent();
@@ -37,6 +37,8 @@ namespace ListWorkes
 
         }
 
+
+        #region*** Формирования Списков
         public void GenerateList(ref List<string> __list, string txt)
         {
 
@@ -163,63 +165,55 @@ namespace ListWorkes
             }
         }
 
-        private void __cbListWorkes_DropDownOpened(object sender, EventArgs e)
-        {
-            //    if(!__cbListWorkes.IsDropDownOpen)
-            //    action(this, e);
-            // когда удаляю DropDownOpened методы и удалю их с событий пишет ошибки не знаю как убрать поэтому оставил
-        }
+        #endregion
 
-        private void __cbListDepartment_DropDownOpened(object sender, EventArgs e)
-        {
-            // когда удаляю DropDownOpened методы и удалю их с событий пишет ошибки не знаю как убрать поэтому оставил
-        }
+        #region*** Мусор
+        //private void __cbListWorkes_DropDownOpened(object sender, EventArgs e)
+        //{
+        //    //    if(!__cbListWorkes.IsDropDownOpen)
+        //    //    action(this, e);
+           
+        //}
 
+        //private void __cbListDepartment_DropDownOpened(object sender, EventArgs e)
+        //{
+           
+        //}
+        #endregion
         private void __cbListWorkes_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var index = __cbListWorkes.SelectedIndex;
-            if (__cbListWorkes.SelectedIndex == index)
-            {
-                __cbListDepartment.SelectedIndex = index;
-                __tbWorkes.IsEnabled = true;
-                if (__cbAdd.IsEnabled == false && __cbChange.IsEnabled == false)
+        {           
+                var index = __cbListWorkes.SelectedIndex;
+                if (__cbListWorkes.SelectedIndex == index)
                 {
-                    __cbAdd.IsEnabled = true;
-                    __cbChange.IsEnabled = true;
-                    __cbDel.IsEnabled = true;
-                }
-             }
+                    __cbListDepartment.SelectedIndex = index;
+                  //  __tbWorkes.IsEnabled = true;
+                    if (__cbAdd.IsEnabled == false && __cbChange.IsEnabled == false)
+                    {
+                    //    __cbAdd.IsEnabled = true;
+                    //    __cbChange.IsEnabled = true;
+                     //   __cbDel.IsEnabled = true;
+                    }
+                }                      
         }
 
         private void __cbListDepartment_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var index = __cbListDepartment.SelectedIndex;
-            if (__cbListDepartment.SelectedIndex == index)
-            {
-                __cbListWorkes.SelectedIndex = index;
-                __tbDepar.IsEnabled = true;
-                if (__cbAdd.IsEnabled == false && __cbChange.IsEnabled == false)
+        {           
+                var index = __cbListDepartment.SelectedIndex;
+                if (__cbListDepartment.SelectedIndex == index)
                 {
-                    __cbAdd.IsEnabled = true;
-                    __cbChange.IsEnabled = true;
-                    __cbDel.IsEnabled = true;
-                }
-            }
-        }
-
-        private void __tbWorkes_KeyDown(object sender, KeyEventArgs e)
-        {
-           // if(this!=null)
-            if(e.Key == Key.Enter)
-            {
-                    if (__cbAdd.IsChecked == true)
+                    __cbListWorkes.SelectedIndex = index;
+                  //  __tbDepar.IsEnabled = true;
+                    if (__cbAdd.IsEnabled == false && __cbChange.IsEnabled == false)
                     {
-                    __cbListWorkes.Items.Add(this);
-                        
+                     //   __cbAdd.IsEnabled = true;
+                     //   __cbChange.IsEnabled = true;
+                     //   __cbDel.IsEnabled = true;
                     }
-            }
+                }           
         }
 
+      
+        #region*** Переключатели :Заменить Добавить Удалить
         private void __cbChange_Click(object sender, RoutedEventArgs e)
         {
             if(__cbChange.IsChecked == true)
@@ -247,6 +241,45 @@ namespace ListWorkes
                 __cbAdd.IsChecked = false;
                 __cbChange.IsChecked = false;
 
+            }
+        }
+        #endregion
+
+        private void __tbDepar_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && __cbAdd.IsChecked==true)
+            {               
+                __cbListDepartment.Items.Add(sender);               
+            }
+            if (e.Key == Key.Enter && __cbDel.IsChecked == true)
+            {
+                var index = __cbListDepartment.SelectedIndex;
+                __cbListDepartment.Items.RemoveAt(index);
+                __cbListWorkes.Items.RemoveAt(index);
+            }
+            if (e.Key == Key.Enter && __cbChange.IsChecked == true)
+            {
+                __cbListDepartment.SelectedItem = sender;
+            }
+        }
+
+        private void TextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && __cbAdd.IsChecked == true)
+            {
+               
+                __cbListWorkes.Items.Add(sender);
+                
+            }
+            if (e.Key == Key.Enter && __cbDel.IsChecked == true)
+            {
+                var index = __cbListWorkes.SelectedIndex;
+                __cbListWorkes.Items.RemoveAt(index);
+                __cbListDepartment.Items.RemoveAt(index);
+            }
+            if (e.Key == Key.Enter && __cbChange.IsChecked == true)
+            {
+                __cbListWorkes.SelectedItem= __cbListWorkes.SelectedItem = sender;
             }
         }
     }
