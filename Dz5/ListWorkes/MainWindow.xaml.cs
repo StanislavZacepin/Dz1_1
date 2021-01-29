@@ -13,176 +13,37 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Collections.ObjectModel;
-
+using ListWorkes.model;
+using ListWorkes.ViewModels;
+using System.ComponentModel;
 
 namespace ListWorkes
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        // public static List<string> Workes { get; set; } 
-        //public static List<string> Depar { get; set; }
+        
 
-        //public delegate void  Action (object sender, EventArgs e);
-        //   Action action;
-      public  ObservableCollection<string> Workes = new ObservableCollection<string>();
-      public  ObservableCollection<string> Depar = new ObservableCollection<string>();
+        public ObservableCollection<string> Workes = new ObservableCollection<string>();
+        public ObservableCollection<string> Depar = new ObservableCollection<string>();
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public MainWindow()
         {
             InitializeComponent();
-            // action = __cbListWorkes_DropDownOpened;
-            //action += __cbListDepartment_DropDownOpened;
 
+            GenerateList.generate(ref Workes, Employee.listWork);
+            GenerateList.generate(ref Depar, Department.listDepar);
+            //LoadComboBox.Combo(ref __cbListWorkes, ref Workes);
+            //LoadComboBox.Combo(ref __cbListDepartment, ref Depar);
 
 
         }
 
-
-        #region*** Формирования Списков
-        public void GenerateList(ref ObservableCollection<string> __list, string txt)
-        {
-
-            var component = txt.Split(';');
-            foreach (var item in component)
-            {
-                __list.Add(item);
-            }
-
-        }
-        public void Employee(ref ObservableCollection<string> __list)
-        {
-
-
-            #region*** Список имен
-            string listWork = "Воеводина Екатерина Владимировна;" +
-                "Грунтовский Иосиф Иосифович;" +
-                "Дудина Ольга Мухаметшевна;" +
-                "Епхиев Олег Муратович;" +
-                "Залесский Петр Карлович;" +
-                "Иванова Яна Сергеевна;" +
-                "Кибакин Михаил Викторович;" +
-                "Киселёва Наталья Ильинична;" +
-                "Кораблин Юрий Алексеевич;" +
-                "Котов Дмитрий Алексеевич;" +
-                "Круглова Елена Леонидовна;" +
-                "Кунижева Диана Анзоровна;" +
-                "Лаамарти Юлия Александровна;" +
-                "Лебедева Светлана Юрьевна;" +
-                "Львов Степан Васильевич;" +
-                "Марков Дмитрий Игоревич;" +
-                "Микрюков Владимир Олегович;" +
-                "Мишин Кирилл Юрьевич;" +
-                "Назаренко Сергей Владимирович;" +
-                "Николаев Александр Александрович;" +
-                "Новиков Алексей Викторович;" +
-                "Носкова Антонина Вячеславовна;" +
-                "Оборский Алексей Юрьевич;" +
-                "Орлова Елена Александровна;" +
-                "Осипова Ольга Степановна;" +
-                "Панова Татьяна Викторовна;" +
-                "Перемибеда Павел Александрович;" +
-                "Письменная Елена Евгеньевна;" +
-                "Примаков Вячеслав Леонидович;" +
-                "Проскурина Александра Сергеевна;" +
-                "Прохода Владимир Анатольевич;" +
-                "Прохорова Ирина Геннадьевна;" +
-                "Проценко Полина Андреевна;" +
-                "Разов Павел Викторович;" +
-                "Райдугин Дмитрий Сергеевич";
-
-            #endregion
-
-            GenerateList(ref __list, listWork);
-
-        }
-        public void Department(ref ObservableCollection<string> __list)
-        {
-
-
-            #region *** Список Департаментов
-            string listDepar = "социологииДоцент;" +
-                  "социологииДоцент;" +
-                  "социологииДоцент;" +
-                  "социологииСтарший преподаватель;" +
-                  "Департамент социологииДоцент;" +
-                  "Департамент социологииЛаборант-исследователь;" +
-                  "Департамент социологииПрофессор;" +
-                  "Центр перспективных исследований и разработок в сфере образованияДиректор центра;" +
-                  "Департамент социологииДоцент;" +
-                  "Департамент социологииАссистент;" +
-                  "Департамент социологииДоцент;" +
-                  "Учебно-научная социологическая;" +
-                  "Департамент социологииДоцент;" +
-                  "Департамент социологииПомощник;" +
-                  "Департамент социологииДоцент;" +
-                  "Учебно-научная социологическая;" +
-                  "Департамент социологииДоцент;" +
-                  "Учебно-научная социологическая;" +
-                  "Департамент социологииДоцент;" +
-                  "Департамент социологииДоцент;" +
-                  "Департамент социологииПрофессор;" +
-                  "Департамент социологииПрофессор;" +
-                  "Департамент социологииДоцент;" +
-                  "Департамент социологииДоцент;" +
-                  "Департамент социологииПрофессор;" +
-                  "Департамент социологииМенеджер;" +
-                  "Департамент социологииДоцент;" +
-                  "Департамент социологииПрофессор;" +
-                  "Департамент социологииПрофессор;" +
-                  "Департамент социологииСтарший;" +
-                  "Департамент социологииДоцент;" +
-                  "Департамент социологииГлавный;" +
-                  "Департамент социологииСтажер;" +
-                  "Департамент социологииПрофессор;" +
-                  "Департамент социологииДоцент";
-
-            #endregion
-
-            GenerateList(ref __list, listDepar);
-
-        }
-
-        private void __cbListWorkes_Loaded(object sender, RoutedEventArgs e)
-        {
-          
-
-            Employee(ref Workes);
-            foreach (var item in Workes)
-            {
-                __cbListWorkes.Items.Add(item);
-            }
-
-        }
-
-        private void __cbListDepartment_Loaded(object sender, RoutedEventArgs e)
-        {
-           
-
-            Department(ref Depar);
-            foreach (var item in Depar)
-            {
-                __cbListDepartment.Items.Add(item);
-            }
-        }
-
-        #endregion
-
-        #region*** Мусор
-        //private void __cbListWorkes_DropDownOpened(object sender, EventArgs e)
-        //{
-        //    //    if(!__cbListWorkes.IsDropDownOpen)
-        //    //    action(this, e);
-           
-        //}
-
-        //private void __cbListDepartment_DropDownOpened(object sender, EventArgs e)
-        //{
-           
-        //}
-        #endregion
+   
         private void __cbListWorkes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {           
                 var index = __cbListWorkes.SelectedIndex;
@@ -209,14 +70,14 @@ namespace ListWorkes
         private void _butDell_Click(object sender, RoutedEventArgs e)
         {
             var index = __cbListWorkes.SelectedIndex;
-            __cbListWorkes.Items.RemoveAt(index);
-            __cbListDepartment.Items.RemoveAt(index);
+            Workes.RemoveAt(index);
+            Depar.RemoveAt(index);
         }
 
         private void _butAdd_Click(object sender, RoutedEventArgs e)
         {
-            Workes.Add("Новый Роботник ");
-            Depar.Add("Департамент ");
+            //Workes.Add("Новый Роботник ");
+            //Depar.Add("Департамент ");
             
         }
 
@@ -224,8 +85,8 @@ namespace ListWorkes
         {
             if(e.Key == Key.Enter)
             {
-                var index = __cbListWorkes.SelectedIndex;
-                Workes[index]=  Workes[index] =(string)sender;
+            //    var index = __cbListWorkes.SelectedIndex;
+            //    Workes[index]=  Workes[index] =(string)sender;
             }
         }
 
@@ -233,8 +94,8 @@ namespace ListWorkes
         {
             if (e.Key == Key.Enter)
             {
-                var index = __cbListDepartment.SelectedIndex;
-                __cbListDepartment.Items[index] = sender;
+                //var index = __cbListDepartment.SelectedIndex;
+                //__cbListDepartment.Items[index] = sender;
             }
         }
     }

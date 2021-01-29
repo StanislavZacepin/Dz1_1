@@ -4,6 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ListWorkes"
+        xmlns:mode="clr-namespace:ListWorkes.model"
+        xmlns:vm="clr-namespace:ListWorkes.ViewModels"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
@@ -12,8 +14,8 @@
             <RowDefinition Height="195*"/>
         </Grid.RowDefinitions>
         <StackPanel Margin="0,0,35,217" Grid.RowSpan="2" Height="195" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="705">
-            <ComboBox IsEditable="True" Margin="-500,5,35,0" x:Name="__cbListWorkes" Width="172" Height="24" Loaded="__cbListWorkes_Loaded"  SelectionChanged="__cbListWorkes_SelectionChanged" />
-            <ComboBox IsEditable="True" Margin="500,-24,0,0" x:Name="__cbListDepartment" Width="172" Loaded="__cbListDepartment_Loaded"  SelectionChanged="__cbListDepartment_SelectionChanged"/>
+            <ComboBox IsEditable="True" Margin="-500,5,35,0" x:Name="__cbListWorkes" Width="172" Height="24" Loaded="__cbListWorkes_Loaded"  SelectionChanged="__cbListWorkes_SelectionChanged" ItemsSource="{Binding ElementName= Workes}" />
+            <ComboBox IsEditable="True" Margin="500,-24,0,0" x:Name="__cbListDepartment" Width="172" Loaded="__cbListDepartment_Loaded"  SelectionChanged="__cbListDepartment_SelectionChanged" ItemsSource="{Binding ElementName= Depar}" />
         </StackPanel>
         <TextBox Name="__tbWorkes" HorizontalAlignment="Right" Margin="0,223,413,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="352" Text="{Binding ElementName=__cbListWorkes,Path=SelectedItem}" KeyDown="__tbWorkes_KeyDown" />
         <TextBox Name="__tbDepar" HorizontalAlignment="Left" Margin="412,222,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="363" Text="{Binding ElementName=__cbListDepartment,Path=SelectedItem}" KeyDown="__tbDepar_KeyDown" />
