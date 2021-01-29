@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Collections.ObjectModel;
 
 
 namespace ListWorkes
@@ -26,7 +27,9 @@ namespace ListWorkes
 
         //public delegate void  Action (object sender, EventArgs e);
         //   Action action;
-       
+      public  ObservableCollection<string> Workes = new ObservableCollection<string>();
+      public  ObservableCollection<string> Depar = new ObservableCollection<string>();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -39,7 +42,7 @@ namespace ListWorkes
 
 
         #region*** Формирования Списков
-        public void GenerateList(ref List<string> __list, string txt)
+        public void GenerateList(ref ObservableCollection<string> __list, string txt)
         {
 
             var component = txt.Split(';');
@@ -49,7 +52,7 @@ namespace ListWorkes
             }
 
         }
-        public void Employee(ref List<string> __list)
+        public void Employee(ref ObservableCollection<string> __list)
         {
 
 
@@ -95,7 +98,7 @@ namespace ListWorkes
             GenerateList(ref __list, listWork);
 
         }
-        public void Department(ref List<string> __list)
+        public void Department(ref ObservableCollection<string> __list)
         {
 
 
@@ -144,7 +147,7 @@ namespace ListWorkes
 
         private void __cbListWorkes_Loaded(object sender, RoutedEventArgs e)
         {
-            List<string> Workes = new List<string>();
+          
 
             Employee(ref Workes);
             foreach (var item in Workes)
@@ -156,7 +159,7 @@ namespace ListWorkes
 
         private void __cbListDepartment_Loaded(object sender, RoutedEventArgs e)
         {
-            List<string> Depar = new List<string>();
+           
 
             Department(ref Depar);
             foreach (var item in Depar)
@@ -186,100 +189,52 @@ namespace ListWorkes
                 if (__cbListWorkes.SelectedIndex == index)
                 {
                     __cbListDepartment.SelectedIndex = index;
-                  //  __tbWorkes.IsEnabled = true;
-                    if (__cbAdd.IsEnabled == false && __cbChange.IsEnabled == false)
-                    {
-                    //    __cbAdd.IsEnabled = true;
-                    //    __cbChange.IsEnabled = true;
-                     //   __cbDel.IsEnabled = true;
-                    }
+                 
                 }                      
         }
 
         private void __cbListDepartment_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {           
                 var index = __cbListDepartment.SelectedIndex;
-                if (__cbListDepartment.SelectedIndex == index)
-                {
-                    __cbListWorkes.SelectedIndex = index;
-                  //  __tbDepar.IsEnabled = true;
-                    if (__cbAdd.IsEnabled == false && __cbChange.IsEnabled == false)
-                    {
-                     //   __cbAdd.IsEnabled = true;
-                     //   __cbChange.IsEnabled = true;
-                     //   __cbDel.IsEnabled = true;
-                    }
-                }           
+            if (__cbListDepartment.SelectedIndex == index)
+            {
+                __cbListWorkes.SelectedIndex = index;
+
+
+            }
+      
+       
         }
 
-      
-        #region*** Переключатели :Заменить Добавить Удалить
-        private void __cbChange_Click(object sender, RoutedEventArgs e)
+        private void _butDell_Click(object sender, RoutedEventArgs e)
         {
-            if(__cbChange.IsChecked == true)
-            {
-                __cbAdd.IsChecked = false;
-                __cbDel.IsChecked = false;
-            }
+            var index = __cbListWorkes.SelectedIndex;
+            __cbListWorkes.Items.RemoveAt(index);
+            __cbListDepartment.Items.RemoveAt(index);
+        }
+
+        private void _butAdd_Click(object sender, RoutedEventArgs e)
+        {
+            Workes.Add("Новый Роботник ");
+            Depar.Add("Департамент ");
             
         }
 
-        private void __cbAdd_Click(object sender, RoutedEventArgs e)
+        private void __tbWorkes_KeyDown(object sender, KeyEventArgs e)
         {
-            if (__cbAdd.IsChecked == true)
+            if(e.Key == Key.Enter)
             {
-                __cbChange.IsChecked = false;
-                __cbDel.IsChecked = false;
-            }
-           
-        }
-
-        private void ___cbDel_Click(object sender, RoutedEventArgs e)
-        {
-            if (__cbDel.IsChecked == true)
-            {
-                __cbAdd.IsChecked = false;
-                __cbChange.IsChecked = false;
-
+                var index = __cbListWorkes.SelectedIndex;
+                Workes[index]=  Workes[index] =(string)sender;
             }
         }
-        #endregion
 
         private void __tbDepar_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter && __cbAdd.IsChecked==true)
-            {               
-                __cbListDepartment.Items.Add(sender);               
-            }
-            if (e.Key == Key.Enter && __cbDel.IsChecked == true)
+            if (e.Key == Key.Enter)
             {
                 var index = __cbListDepartment.SelectedIndex;
-                __cbListDepartment.Items.RemoveAt(index);
-                __cbListWorkes.Items.RemoveAt(index);
-            }
-            if (e.Key == Key.Enter && __cbChange.IsChecked == true)
-            {
-                __cbListDepartment.SelectedItem = sender;
-            }
-        }
-
-        private void TextBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter && __cbAdd.IsChecked == true)
-            {
-               
-                __cbListWorkes.Items.Add(sender);
-                
-            }
-            if (e.Key == Key.Enter && __cbDel.IsChecked == true)
-            {
-                var index = __cbListWorkes.SelectedIndex;
-                __cbListWorkes.Items.RemoveAt(index);
-                __cbListDepartment.Items.RemoveAt(index);
-            }
-            if (e.Key == Key.Enter && __cbChange.IsChecked == true)
-            {
-                __cbListWorkes.SelectedItem= __cbListWorkes.SelectedItem = sender;
+                __cbListDepartment.Items[index] = sender;
             }
         }
     }
