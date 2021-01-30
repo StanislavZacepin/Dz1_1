@@ -22,28 +22,29 @@ namespace ListWorkes
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, INotifyPropertyChanged
+    public partial class MainWindow : Window
     {
-        
 
-        public ObservableCollection<string> Workes = new ObservableCollection<string>();
-        public ObservableCollection<string> Depar = new ObservableCollection<string>();
 
-        public event PropertyChangedEventHandler PropertyChanged;
+
+
+
+        Employee employee = new Employee();
+        Department department = new Department();
 
         public MainWindow()
         {
             InitializeComponent();
 
-            GenerateList.generate(ref Workes, Employee.listWork);
-            GenerateList.generate(ref Depar, Department.listDepar);
-            //LoadComboBox.Combo(ref __cbListWorkes, ref Workes);
-            //LoadComboBox.Combo(ref __cbListDepartment, ref Depar);
+            employee.generate();
+            department.generate();
+           __cbListWorkes =  LoadComboBox.Combo( __cbListWorkes, employee.Workes);
+           __cbListDepartment = LoadComboBox.Combo( __cbListDepartment, department.Depar);
 
 
         }
 
-   
+       
         private void __cbListWorkes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {           
                 var index = __cbListWorkes.SelectedIndex;
@@ -70,14 +71,14 @@ namespace ListWorkes
         private void _butDell_Click(object sender, RoutedEventArgs e)
         {
             var index = __cbListWorkes.SelectedIndex;
-            Workes.RemoveAt(index);
-            Depar.RemoveAt(index);
+            employee.Workes.RemoveAt(index);
+            department.Depar.RemoveAt(index);
         }
 
         private void _butAdd_Click(object sender, RoutedEventArgs e)
         {
-            //Workes.Add("Новый Роботник ");
-            //Depar.Add("Департамент ");
+            employee.Workes.Add("Новый Роботник ");
+            department.Depar.Add("Департамент ");
             
         }
 

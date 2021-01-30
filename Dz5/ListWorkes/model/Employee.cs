@@ -1,15 +1,18 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 
 namespace ListWorkes.model
 {
    
-        public static class Employee
+        public  class Employee: INotifyPropertyChanged
         {
-          
 
-            #region*** Список имен
-          public static  string listWork = "Воеводина Екатерина Владимировна;" +
+        public ObservableCollection<string> Workes { get; set; }
+      
+       
+        #region*** Список имен
+        public static  string listWork = "Воеводина Екатерина Владимировна;" +
                 "Грунтовский Иосиф Иосифович;" +
                 "Дудина Ольга Мухаметшевна;" +
                 "Епхиев Олег Муратович;" +
@@ -45,11 +48,22 @@ namespace ListWorkes.model
                 "Разов Павел Викторович;" +
                 "Райдугин Дмитрий Сергеевич";
 
-            #endregion
 
-           
 
-          
+        #endregion
+
+        public void generate()
+        {
+            var component = listWork.Split(';');
+            foreach (var item in component)
+            {
+                Workes.Add(item);
+            }
+
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+
     }
 
 

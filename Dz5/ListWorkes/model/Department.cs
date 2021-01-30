@@ -1,13 +1,25 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 
 namespace ListWorkes.model
 {
    
-        public static class Department
+        public  class Department: INotifyPropertyChanged
         {
-            
 
+        public ObservableCollection<string> Depar { get; set; }
+       
+        public  void generate()
+        {
+            var component = listDepar.Split(';');
+            foreach (var item in component)
+            {
+                Depar.Add(item);
+            }
+
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
         #region *** Список Департаментов
         public static string listDepar = "социологииДоцент;" +
                   "социологииДоцент;" +
@@ -45,9 +57,11 @@ namespace ListWorkes.model
                   "Департамент социологииПрофессор;" +
                   "Департамент социологииДоцент";
 
-#endregion
+       
 
-            }
+        #endregion
+
+    }
       }
 
 
