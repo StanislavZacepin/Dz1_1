@@ -2,17 +2,25 @@
 using System.ComponentModel;
 
 
-namespace ListWorkes.model
+namespace ListWorkes.models
 {
    
         public  class Employee: INotifyPropertyChanged
         {
+       // public string name { get; set; }
+        private ObservableCollection<string> _Workes = new ObservableCollection<string>();
 
-        public ObservableCollection<string> Workes { get; set; }
-      
-       
+        public ObservableCollection<string> Workes
+        {
+            get => _Workes;
+            set
+            {
+                _Workes = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Workes)));
+            }
+        }
         #region*** Список имен
-        public static  string listWork = "Воеводина Екатерина Владимировна;" +
+        public   string listWork = "Воеводина Екатерина Владимировна;" +
                 "Грунтовский Иосиф Иосифович;" +
                 "Дудина Ольга Мухаметшевна;" +
                 "Епхиев Олег Муратович;" +
@@ -63,6 +71,7 @@ namespace ListWorkes.model
         }
         public event PropertyChangedEventHandler PropertyChanged;
 
+       // public override string ToString() => name;
 
     }
 
