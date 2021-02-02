@@ -4,7 +4,7 @@ namespace AsteroidGame.VisualObject
 {
     internal abstract class ImageObject : VisualObject
     {
-        private readonly Image _Image;
+        private  readonly Image _Image;
         protected ImageObject(Point Position, Point Direction, Size size,Image image) 
             : base(Position, Direction, size)
         {
@@ -12,6 +12,7 @@ namespace AsteroidGame.VisualObject
         }
         public override void Draw(Graphics graphics)
         {
+            if (!Enabled) return;
             graphics.DrawImage(_Image, _Position.X, _Position.Y, _Size.Width, _Size.Height); 
         }
     }

@@ -9,8 +9,9 @@ namespace AsteroidGame.VisualObject
     {
         private static readonly Image _Image = Image.FromFile("image/ast.png");
 
-        
-        public int Power { get; set; }
+
+        public int Power { get; set; } = 3;
+
 
         public Rectangle Rect => new Rectangle(_Position, _Size); // астеройд возвращает облост которую он занимает
 
@@ -26,10 +27,7 @@ namespace AsteroidGame.VisualObject
         public override void Update()
         {
 
-            //if (this.Rect == CheckCollision(ICollision))
-            //{
-            //    __Direction.X *= -1;  пока не решил эту задачку буду думать дальше и огда сделаю пришлю к следущему заданию
-            //}
+            if (!Enabled) return;
 
             _Position.X += _Direction.X;
             _Position.Y += _Direction.Y;
