@@ -21,7 +21,7 @@ namespace ListWorkes.models
 
 
         #region *** Список Департаментов
-        public  string listDepar = "социологииДоцент;" +
+          string TextDepar = "социологииДоцент;" +
                   "социологииДоцент;" +
                   "социологииДоцент;" +
                   "социологииСтарший преподаватель;" +
@@ -63,7 +63,7 @@ namespace ListWorkes.models
 
         public void generate()
         {
-            var component = listDepar.Split(';');
+            var component = TextDepar.Split(';');
             foreach (var item in component)
             {
                 Depar.Add(item);

@@ -16,7 +16,9 @@ using System.Collections.ObjectModel;
 using ListWorkes.models;
 using ListWorkes.ViewModels;
 using System.ComponentModel;
-
+using System.Data.Common;
+using System.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 
 namespace ListWorkes
 {
@@ -25,18 +27,44 @@ namespace ListWorkes
     /// </summary>
     public partial class MainWindow : Window
     {
-        Employee employee = new Employee();
+
+        public static IConfiguration Configuration { get; } = new ConfigurationBuilder().AddJsonFile("appsettings.json", false, true).Build();
+       
+        public static string ConfigurationString => Configuration.GetConnectionString("Default");
+        //  говорим обьекту конфигурацыи что нам нужно стока подключения по имени дефолт
+
+        Employee employee = new Employee(); 
         Department department = new Department();
        
         public MainWindow()
         {
+            /// <summary>
+            //подключения к бд
+            /// </summary>
+            // var connections_string2 = @"Data Source=\\localhost;Initial Catalog=TestBD_Workes;Integrated Security=True;Timeout=30";
+            // var connections_string = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=TestBD_Workes;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            //var connection_string_builder = new SqlConnectionStringBuilder(connections_string); в файле конфигурацыы известили о подключении 
+
+
+            /// <summary>
+            //конфигурацыя . добавления файла appsettings.json указываем чтобы фаил был обязательным(false)
+            //и чтобы система заней слидила и при изменениях автоматически перезагружался при изменения на диске (true)
+            // и потом собираем конфигурацыю ,
+            //но так как мы выводим в статическое свойства в класса для того чтобы была доступна в любом месте. Просто за каментим это
+            /// </summary>
+            //var config_builder = new ConfigurationBuilder()
+            //    .AddJsonFile("appsettings.json",false,true);
+            //var config = config_builder.Build();
+            InitializeComponent();
             employee.generate();
             department.generate();
-            InitializeComponent();
-            __cbListWorkes.ItemsSource = employee.Workes;
-            // LoadComboBox.Combo( __cbListWorkes, employee.Workes);
+            
+            __cbListWorkes.ItemsSource = employee.Workes;          
             __cbListDepartment.ItemsSource = department.Depar;
-                //LoadComboBox.Combo( __cbListDepartment, department.Depar);
+
+            AddWorkes(employee.Workes);
+            AddDeper(department.Depar);
+
 
 
         }
@@ -119,9 +147,38 @@ namespace ListWorkes
             }
         }
 
-       
-        
+        private static void AddWorkes(Employee employee)
+        {
 
+            using (var connection = new SqlConnection(ConfigurationString))
+            {
+                connection.Open();
+                const string __SqlInsertToName_WorkesTable = @"INSERT INTO [dbo].[TestBD_Workes] (Name) VALUES (N'{0}')";
+                foreach (var item in employee.Workes)
+                {
+                    var command = new SqlCommand(string.Format(__SqlInsertToName_WorkesTable, item), connection);
+                    command.ExecuteNonQuery();
+                }
+
+                // connection.Dispose(); не обязательно так как мы использовали using()  
+            }
+        }  
+         private static void AddDeper(Department department)
+        {
+
+            using (var connection = new SqlConnection(ConfigurationString))
+            {
+                connection.Open();
+                  const string __SqlInsertToName_WorkesTable = @"INSERT INTO [dbo].[TestBD_Workes] (Daper) VALUES (N'{0}')";
+                foreach (var item in department.Depar)
+                {
+                    var command = new SqlCommand(string.Format(__SqlInsertToName_WorkesTable, item), connection);
+                    command.ExecuteNonQuery();
+                }
+
+                // connection.Dispose(); не обязательно так как мы использовали using()  
+            }
+        }
     }
 }
 

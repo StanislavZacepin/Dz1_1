@@ -20,7 +20,7 @@ namespace ListWorkes.models
             }
         }
         #region*** Список имен
-        public   string listWork = "Воеводина Екатерина Владимировна;" +
+           string TextWork = "Воеводина Екатерина Владимировна;" +
                 "Грунтовский Иосиф Иосифович;" +
                 "Дудина Ольга Мухаметшевна;" +
                 "Епхиев Олег Муратович;" +
@@ -59,10 +59,10 @@ namespace ListWorkes.models
 
 
         #endregion
-
+        
         public void generate()
         {
-            var component = listWork.Split(';');
+            var component = TextWork.Split(';');
             foreach (var item in component)
             {
                 Workes.Add(item);
