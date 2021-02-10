@@ -30,7 +30,7 @@ namespace ListWorkes
 
         public static IConfiguration Configuration { get; } = new ConfigurationBuilder().AddJsonFile("appsettings.json", false, true).Build();
        
-        public static string ConfigurationString => Configuration.GetConnectionString("Default");
+        public static string ConnectionString => Configuration.GetConnectionString("Default");
         //  говорим обьекту конфигурацыи что нам нужно стока подключения по имени дефолт
 
         Employee employee = new Employee(); 
@@ -56,15 +56,19 @@ namespace ListWorkes
             //    .AddJsonFile("appsettings.json",false,true);
             //var config = config_builder.Build();
             InitializeComponent();
+
+
             employee.generate();
             department.generate();
             
             __cbListWorkes.ItemsSource = employee.Workes;          
             __cbListDepartment.ItemsSource = department.Depar;
-
-            AddWorkes(employee.Workes);
-            AddDeper(department.Depar);
-
+            
+            const string __SqlInsertToName_WorkesTable = @"INSERT INTO [dbo].[Works] (Name,Daper) VALUES (N'{0}','{1}') ";
+            //const string __SqlInsertToDaper_WorkesTable = @"INSERT INTO [dbo].[Works] (Daper) VALUES (N'{0}')";
+             AddTable(employee.Workes,department.Depar, __SqlInsertToName_WorkesTable);
+            //AddTable(department.Depar, __SqlInsertToDaper_WorkesTable);
+            
 
 
         }
@@ -147,38 +151,23 @@ namespace ListWorkes
             }
         }
 
-        private static void AddWorkes(Employee employee)
+        private static void AddTable(ObservableCollection<string> Name, ObservableCollection<string> Daper, string comand)
         {
-
-            using (var connection = new SqlConnection(ConfigurationString))
+            var connection_string = ConnectionString;
+            using (var connection = new SqlConnection(connection_string))
             {
                 connection.Open();
-                const string __SqlInsertToName_WorkesTable = @"INSERT INTO [dbo].[TestBD_Workes] (Name) VALUES (N'{0}')";
-                foreach (var item in employee.Workes)
-                {
-                    var command = new SqlCommand(string.Format(__SqlInsertToName_WorkesTable, item), connection);
+                
+               for(int i = 0; i < Name.Count; i++) 
+                { 
+                    var command = new SqlCommand(string.Format(comand, Name[i],Daper[i]), connection);
                     command.ExecuteNonQuery();
                 }
 
-                // connection.Dispose(); не обязательно так как мы использовали using()  
+                 connection.Dispose();
             }
-        }  
-         private static void AddDeper(Department department)
-        {
-
-            using (var connection = new SqlConnection(ConfigurationString))
-            {
-                connection.Open();
-                  const string __SqlInsertToName_WorkesTable = @"INSERT INTO [dbo].[TestBD_Workes] (Daper) VALUES (N'{0}')";
-                foreach (var item in department.Depar)
-                {
-                    var command = new SqlCommand(string.Format(__SqlInsertToName_WorkesTable, item), connection);
-                    command.ExecuteNonQuery();
-                }
-
-                // connection.Dispose(); не обязательно так как мы использовали using()  
-            }
-        }
+        }       
+       
     }
 }
 
