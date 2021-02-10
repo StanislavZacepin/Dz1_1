@@ -60,6 +60,7 @@ namespace ListWorkes.models
 
         #endregion
         
+       
         public void generate()
         {
             var component = TextWork.Split(';');

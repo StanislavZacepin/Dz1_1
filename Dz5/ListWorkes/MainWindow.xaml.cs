@@ -19,6 +19,7 @@ using System.ComponentModel;
 using System.Data.Common;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using System.Data;
 
 namespace ListWorkes
 {
@@ -27,15 +28,17 @@ namespace ListWorkes
     /// </summary>
     public partial class MainWindow : Window
     {
-
+        const string __SqlInsertToName_DaperTable = @"INSERT INTO [dbo].[Departments] (Name) VALUES (N'{0}') ";
+        const string __SqlInsertToName_WorkesTable = @"INSERT INTO [dbo].[Employees] (Name,Age,DepartmentId) VALUES (N'{0}','{1}''{2}') ";
         public static IConfiguration Configuration { get; } = new ConfigurationBuilder().AddJsonFile("appsettings.json", false, true).Build();
-       
+
         public static string ConnectionString => Configuration.GetConnectionString("Default");
         //  говорим обьекту конфигурацыи что нам нужно стока подключения по имени дефолт
-
-        Employee employee = new Employee(); 
+        
+        Employee employee = new Employee();
         Department department = new Department();
-       
+        
+
         public MainWindow()
         {
             /// <summary>
@@ -58,43 +61,46 @@ namespace ListWorkes
             InitializeComponent();
 
 
+           
+
             employee.generate();
-            department.generate();
+             department.generate();
+
+            //  __cbListWorkes.ItemsSource = employee.Workes;          
+            //  __cbListDepartment.ItemsSource = department.Depar;
+
             
-            __cbListWorkes.ItemsSource = employee.Workes;          
-            __cbListDepartment.ItemsSource = department.Depar;
-            
-            const string __SqlInsertToName_WorkesTable = @"INSERT INTO [dbo].[Works] (Name,Daper) VALUES (N'{0}','{1}') ";
-            //const string __SqlInsertToDaper_WorkesTable = @"INSERT INTO [dbo].[Works] (Daper) VALUES (N'{0}')";
-             AddTable(employee.Workes,department.Depar, __SqlInsertToName_WorkesTable);
+            //const string __SqlInsertToDaper_WorkesTable = @"INSERT INTO [dbo].[Departments] (Daper) VALUES (N'{0}')";
+
+            AddTable(employee.Workes, department.Depar);
             //AddTable(department.Depar, __SqlInsertToDaper_WorkesTable);
-            
+
 
 
         }
 
-       
+
         private void __cbListWorkes_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {           
-                var index = __cbListWorkes.SelectedIndex;
-                if (__cbListWorkes.SelectedIndex == index)
-                {
-                    __cbListDepartment.SelectedIndex = index;
-                 
-                }                      
+        {
+            var index = __cbListWorkes.SelectedIndex;
+            if (__cbListWorkes.SelectedIndex == index)
+            {
+                __cbListDepartment.SelectedIndex = index;
+
+            }
         }
 
         private void __cbListDepartment_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {           
-                var index = __cbListDepartment.SelectedIndex;
+        {
+            var index = __cbListDepartment.SelectedIndex;
             if (__cbListDepartment.SelectedIndex == index)
             {
                 __cbListWorkes.SelectedIndex = index;
 
 
             }
-      
-       
+
+
         }
 
         private void _butDell_Click(object sender, RoutedEventArgs e)
@@ -116,18 +122,18 @@ namespace ListWorkes
 
         private void __tbWorkes_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Enter)
+            if (e.Key == Key.Enter)
             {
                 var index = __cbListWorkes.SelectedIndex;
-               // __cbListWorkes.Items.RemoveAt(index);
-              
+                // __cbListWorkes.Items.RemoveAt(index);
+
                 // employee.Workes.Insert(index,sender.ToString());
                 //__cbListWorkes.Items.Insert(index,employee.Workes[index]);
                 if (sender != null)
                 {
-                   
+
                     employee.Workes.RemoveAt(index);
-                    employee.Workes.Insert(index,sender.ToString());
+                    employee.Workes.Insert(index, sender.ToString());
                 }
             }
         }
@@ -150,24 +156,85 @@ namespace ListWorkes
                 }
             }
         }
-
-        private static void AddTable(ObservableCollection<string> Name, ObservableCollection<string> Daper, string comand)
+       
+        private static void AddTable(ObservableCollection<string> Name,ObservableCollection<string> Depar)
         {
+            string sql = "SELECT * FROM [Departments]";
+            string sql2 = "SELECT * FROM [Employees]";
+            Random rnd18_50 = new Random();
             var connection_string = ConnectionString;
+            DataRelation dataRelation;
+            
             using (var connection = new SqlConnection(connection_string))
             {
                 connection.Open();
-                
-               for(int i = 0; i < Name.Count; i++) 
-                { 
-                    var command = new SqlCommand(string.Format(comand, Name[i],Daper[i]), connection);
+                DataSet ds = new DataSet();
+                SqlDataAdapter adapter = new SqlDataAdapter(sql, connection);
+                adapter.Fill(ds);
+                DataSet ds2 = new DataSet();
+                SqlDataAdapter adapter2 = new SqlDataAdapter(sql2, connection);
+                adapter.Fill(ds2);
+               
+                foreach (var item in Depar)
+                {
+                    var command = new SqlCommand(string.Format(__SqlInsertToName_DaperTable, item), connection);
                     command.ExecuteNonQuery();
                 }
+                    foreach (var itemWork in Name)
+                    {
 
-                 connection.Dispose();
+                       var command = new SqlCommand(string.Format(__SqlInsertToName_WorkesTable, itemWork, rnd18_50.Next(18, 51),rnd18_50.Next(0,15) ), connection);
+
+                    command.ExecuteNonQuery();
+
+                }
+
+               
+                dataRelation = new DataRelation("ties", ds.Tables["Departments"].Columns["Id"], ds2.Tables["Employees"].Columns["DepartmentId"]);
+                connection.Dispose();
             }
-        }       
+        }
        
+
     }
 }
+#region *** Список Департаментов
+//string TextDepar = "социологииДоцент;" +
+//        "социологии Доцент;" +
+//        "социологии Доцент;" +
+//        "социологии Старший преподаватель;" +
+//        "Департамент социологииДоцент;" +
+//        "Департамент социологииЛаборант-исследователь;" +
+//        "Департамент социологииПрофессор;" +
+//        "Центр перспективных исследований и разработок в сфере образованияДиректор центра;" +
+//        "Департамент социологииДоцент;" +
+//        "Департамент социологииАссистент;" +
+//        "Департамент социологииДоцент;" +
+//        "Учебно-научная социологическая;" +
+//        "Департамент социологииДоцент;" +
+//        "Департамент социологииПомощник;" +
+//        "Департамент социологииДоцент;" +
+//        "Учебно-научная социологическая;" +
+//        "Департамент социологииДоцент;" +
+//        "Учебно-научная социологическая;" +
+//        "Департамент социологииДоцент;" +
+//        "Департамент социологииДоцент;" +
+//        "Департамент социологииПрофессор;" +
+//        "Департамент социологииПрофессор;" +
+//        "Департамент социологииДоцент;" +
+//        "Департамент социологииДоцент;" +
+//        "Департамент социологииПрофессор;" +
+//        "Департамент социологииМенеджер;" +
+//        "Департамент социологииДоцент;" +
+//        "Департамент социологииПрофессор;" +
+//        "Департамент социологииПрофессор;" +
+//        "Департамент социологииСтарший;" +
+//        "Департамент социологииДоцент;" +
+//        "Департамент социологииГлавный;" +
+//        "Департамент социологии Стажер;" +
+//        "Департамент социологииПрофессор;" +
+//        "Департамент социологииДоцент";
 
+
+
+#endregion
