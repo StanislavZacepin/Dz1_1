@@ -4,7 +4,8 @@ using System;
 using System.Linq;
 using AsteroidGame.VisualObject;
 using System.Collections.Generic;
-using AsteroidGame.ConsoleLoggers;
+using AsteroidGame.DebugLoggers;
+
 
 
 
@@ -34,9 +35,9 @@ namespace AsteroidGame.VisualObject
         const int asteroid_size = 25;
         const int asteroid_max_speed = 20;
 
-        private static ColnsoleLogger __ConsoleLogger;
+        private static DebugLogger __ConsoleLogger;
 
-        private static ColnsoleLogger.Action Show;
+        private static DebugLogger.logCreateAsterAndBullet Show;
 
         public static int Width { get; set; }
         public static int Height { get; set; }
@@ -121,7 +122,7 @@ namespace AsteroidGame.VisualObject
 
            
 
-            __ConsoleLogger = new ColnsoleLogger();
+            __ConsoleLogger = new DebugLogger();
             Show += __ConsoleLogger.LogCreateAsteroid;
             for (int i = 0; i < asteroid_count; i++)
             {

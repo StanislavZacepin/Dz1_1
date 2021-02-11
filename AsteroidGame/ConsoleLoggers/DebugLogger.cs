@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 
-namespace AsteroidGame.ConsoleLoggers
+namespace AsteroidGame.DebugLoggers
 {
    
-     internal class ColnsoleLogger//<Titem>
+     internal class DebugLogger//<Titem>
     {
-        public  delegate void Action ();
+        public  delegate void logCreateAsterAndBullet ();
 
         private int count = 0;
         public  void LogCreateAsteroid()
