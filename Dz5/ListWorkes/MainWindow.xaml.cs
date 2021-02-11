@@ -190,7 +190,7 @@ namespace ListWorkes
                 }
 
                
-                dataRelation = new DataRelation("ties", ds.Tables["Departments"].Columns["Id"], ds2.Tables["Employees"].Columns["DepartmentId"]);
+                dataRelation = new DataRelation("ties",ds.Tables["Departments"].Columns["Id"], ds2.Tables["Employees"].Columns["DepartmentId"]);//  куда его надо засунуть xD
                 connection.Dispose();
             }
         }
