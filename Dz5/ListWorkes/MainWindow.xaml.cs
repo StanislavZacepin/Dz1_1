@@ -29,7 +29,7 @@ namespace ListWorkes
     public partial class MainWindow : Window
     {
         const string __SqlInsertToName_DaperTable = @"INSERT INTO [dbo].[Departments] (Name) VALUES (N'{0}') ";
-        const string __SqlInsertToName_WorkesTable = @"INSERT INTO [dbo].[Employees] (Name,Age,DepartmentId) VALUES (N'{0}','{1}''{2}') ";
+        const string __SqlInsertToName_WorkesTable = @"INSERT INTO [dbo].[Employees] (Name,Age,DepartmentId) VALUES (N'{0}','{1}','{2}') ";
         public static IConfiguration Configuration { get; } = new ConfigurationBuilder().AddJsonFile("appsettings.json", false, true).Build();
 
         public static string ConnectionString => Configuration.GetConnectionString("Default");
@@ -159,11 +159,11 @@ namespace ListWorkes
        
         private static void AddTable(ObservableCollection<string> Name,ObservableCollection<string> Depar)
         {
-            string sql = "SELECT * FROM [Departments]";
-            string sql2 = "SELECT * FROM [Employees]";
+            string sql = "SELECT * FROM [Departments]; SELECT * FROM [Employees]";
+            
             Random rnd18_50 = new Random();
             var connection_string = ConnectionString;
-            DataRelation dataRelation;
+            DataRelation dr;
             
             using (var connection = new SqlConnection(connection_string))
             {
@@ -171,26 +171,40 @@ namespace ListWorkes
                 DataSet ds = new DataSet();
                 SqlDataAdapter adapter = new SqlDataAdapter(sql, connection);
                 adapter.Fill(ds);
-                DataSet ds2 = new DataSet();
-                SqlDataAdapter adapter2 = new SqlDataAdapter(sql2, connection);
-                adapter.Fill(ds2);
-               
-                foreach (var item in Depar)
-                {
-                    var command = new SqlCommand(string.Format(__SqlInsertToName_DaperTable, item), connection);
-                    command.ExecuteNonQuery();
-                }
-                    foreach (var itemWork in Name)
-                    {
 
-                       var command = new SqlCommand(string.Format(__SqlInsertToName_WorkesTable, itemWork, rnd18_50.Next(18, 51),rnd18_50.Next(0,15) ), connection);
 
-                    command.ExecuteNonQuery();
 
-                }
+                #region убрал так как заполнил базу данных
+                //foreach (var item in Depar)
+                //{
+                //    var command = new SqlCommand(string.Format(__SqlInsertToName_DaperTable, item), connection);
+                //    command.ExecuteNonQuery();
+                //}
+                //    foreach (var itemWork in Name)
+                //    {
 
-               
-                dataRelation = new DataRelation("ties",ds.Tables["Departments"].Columns["Id"], ds2.Tables["Employees"].Columns["DepartmentId"]);//  куда его надо засунуть xD
+                //       var command = new SqlCommand(string.Format(__SqlInsertToName_WorkesTable, itemWork, rnd18_50.Next(18, 51),rnd18_50.Next(0,15)), connection);
+
+                //    command.ExecuteNonQuery();
+
+                //} 
+                #endregion
+
+                #region Ключ 
+                //ForeignKeyConstraint foreignKey = new ForeignKeyConstraint(ds.Tables["Departments"].Columns["Id"], ds.Tables["Employees"].Columns["DepartmentId"])
+                //{
+                //    ConstraintName = "TiesKey",
+                //    DeleteRule = Rule.SetNull,
+                //    UpdateRule = Rule.Cascade
+                //};
+
+                //ds.Tables["Employees"].Constraints.Add(foreignKey);
+
+                //ds.EnforceConstraints = true; 
+                #endregion
+
+                ds.Relations.Add("ties", ds.Tables["Departments"].Columns["Id"], ds.Tables["Employees"].Columns["DepartmentId"]);
+            
                 connection.Dispose();
             }
         }
